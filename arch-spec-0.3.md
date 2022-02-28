@@ -23,7 +23,7 @@ Invisible Things Lab
 rafal@invisiblethingslab.com
 ```
 
-<IMAGE_ITL-LOGO>
+<PLACEHOLDER_IMAGE_0>[![ITL logo](/images/ITL-logo.png)](/images/ITL-logo.png)
 
 This pre-release version of this document is _not_ intended for distribution to wide audience. Any use of this
 document, including copying, quoting, or distribution, requires written permissions from the copyright owner.
@@ -130,7 +130,7 @@ Copyright © by Invisible Things Lab, 2010, All rights reserved.
       - Resistance to DMA attacks (e.g. malicious PCMCIA)
 
 
-## 1. Introduction
+## 1. Introduction (OUTDATED)
 
 Project Qubes aims at building a secure operating system for desktop and laptop computers. The stress is
 on security, which is achieved by exploiting the isolation capabilities of the bare-metal hypervisor (Xen), to-
@@ -144,7 +144,7 @@ The first two introductory chapters of this document should be read by all users
 chapters dive into various technical details of the system architecture and are intended for system develop-
 ers and advanced users of the system.
 
-**1.1. Problems with current Operating Systems**
+**1.1. Problems with current Operating Systems** (OUTDATED)
 
 Current mainstream operating systems that are used for desktop computing, e.g. Windows, Mac OS X, or
 Linux-based systems, proved unsatisfactory when it comes to security. The major problem with current sys-
@@ -163,7 +163,7 @@ gle known security bug. But such approach not only doesn't scale well, it simply
 users who require more than average security. Patching can only address known and popular attacks, but
 offers no protection against new, or less popular, more targeted, threats.
 
-**1.2. Why new OS?**
+**1.2. Why new OS?** (OUTDATED)
 
 Authors of this document do not believe that, at any time in the foreseeable future, we would be able to patch
 all the bugs in the software we use, as well as detect all the malicious software. Consequently we need a
@@ -175,7 +175,7 @@ of virtualization technology, which is used for two primary reasons: offering ex
 erties, as well as the ability to reuse the large amount of software, including most of the applications and
 drivers written for mainstream OSes, like Linux or Windows.
 
-**1.3. How does virtualization enable security?**
+**1.3. How does virtualization enable security?** (OUTDATED)
 
 Virtualization allows to create isolated containers, the Virtual Machines (VM). VMs can be much better iso-
 lated between each other than standard processes in monolithic kernels of popular OSes like Windows or
@@ -188,7 +188,7 @@ driver domains -- special hardware-isolated containers for hosting e.g. networki
 prone to compromise.
 
 
-**1.4. Qubes security model: a practical example**
+**1.4. Qubes security model: a practical example** (OUTDATED)
 
 The more systematic introduction into Qubes architecture is presented in the next chapter. Here, we present
 the practical view of the Qubes security model from the user's perspective.
@@ -198,7 +198,7 @@ model. The primary job of Qubes OS is to isolate VMs from each other, so that if
 promised, the others are still safe to use. To see how this could improve the security of a typical user, let's
 consider a practical example with the following hypothetical VMs (domains) defined by the user:
 
-1. The " **Random** " VM, which is to be used for all the usual Internet browsing, googling, news reading,
+1. The "**Random**" VM, which is to be used for all the usual Internet browsing, googling, news reading,
     watching You Tube funny movies, etc. Also the user would use this Random VM to install some more or
     less random applications that perhaps the user cannot fully trust, but which might be fun enough to try,
     e.g. some games. What defines the Random VM is that there is no sensitive data there at all, so the po-
@@ -206,7 +206,8 @@ consider a practical example with the following hypothetical VMs (domains) defin
     misbehaving (because perhaps the Web browser running there got compromised when the user was
     browsing the Web) the user can simply restart it, and Qubes would make sure to revert it to the known
     good state.
-2. The " **Social** " VM, which the user might decide to use e.g. to host an email client for his or her personal
+
+2. The "**Social**" VM, which the user might decide to use e.g. to host an email client for his or her personal
     email account (i.e. not a corporate one), and also for updating the user's private blog, twitter, facebook,
     and god-knows-what-other Web social service. The common denominator of all the things that the user
     does in this VM is that they are all connected with the user's social identity online (email, blog, twitter,
@@ -218,7 +219,8 @@ consider a practical example with the following hypothetical VMs (domains) defin
     the user twitter account, etc. Consequently, because all those applications have access to the same
     sensitive resources, in that case the user's social identity, there is little point into further separating them
     from each other, and is thus reasonable to host them all in the same VM.
-3. The " **Shopping** " VM, which would be used for all the Internet shopping, e.g. Amazon, eBay, etc. The
+
+3. The "**Shopping**" VM, which would be used for all the Internet shopping, e.g. Amazon, eBay, etc. The
     common sensitive resource in this case is the user's credit card number (and perhaps the user's ad-
     dress, phone and name). If this machine gets compromised, this would likely happen because one of the
     shopping sites turned out to be malicious and was hosting a driver-by exploit. This might be because the
@@ -233,10 +235,12 @@ consider a practical example with the following hypothetical VMs (domains) defin
     with very high limit, e.g. for buying all the latest computer hardware. In that case it would make sense for
     the user to have two different shopping VMs, e.g. "Shopping-low", and "Shopping-high". In most civilized
     countries, the widespread credit card transaction insurance would not make it worth the effort though.
-4. The " **Bank** " VM, which the user might exclusively use only for accessing his or her bank website, making
+
+4. The "**Bank**" VM, which the user might exclusively use only for accessing his or her bank website, making
     wires, etc. Such machine might be allowed only HTTPS access to the bank website, and nothing except
     it.
-5. The " **Corporate** " VM, which the user might use only to host the corporate email client, as well as for ac-
+
+5. The "**Corporate**" VM, which the user might use only to host the corporate email client, as well as for ac-
     cessing the corporate intranet. So, this machine would have a VPN client and would only allow VPN
     connections to the corporate VPN gateway. This is also where all the user's job-related files, like reports,
     spreadsheets, databases will be kept and used (so to work on a report the user would use a word proc-
@@ -245,26 +249,23 @@ consider a practical example with the following hypothetical VMs (domains) defin
     work, working on the same project, sends the user an infected PDF document, that contains an exploit
     for the PDF viewer that is used by the user. Qubes would not stop such a hypothetical exploit from com-
     promising the VM (but will stop it from compromising other VMs). On the other hand, it's very likely the
+    secrets from the user's corporate VM would get compromised anyway, because the colleague has a
+    compromised machine, so if they work in the same team, on the same project, all the project-related
+    documents would get compromised anyway.
+    A user that interacts with more than one team (with different clearance levels), or different departments,
+    would likely need to define more than one VMs, e.g. "Corporate-research", "Corporate-accounting",
+    "Corporate-customers", etc.
+    Some other users might work as consultants, and e.g. on two different projects for two different compa-
+    nies. The user might then want to create two different VMs: "Corporate-A" and "Corporate-B", to fully iso-
+    late those two job engagements from each other.
 
-
-```
-secrets from the user's corporate VM would get compromised anyway, because the colleague has a
-compromised machine, so if they work in the same team, on the same project, all the project-related
-documents would get compromised anyway.
-A user that interacts with more than one team (with different clearance levels), or different departments,
-would likely need to define more than one VMs, e.g. "Corporate-research", "Corporate-accounting",
-"Corporate-customers", etc.
-Some other users might work as consultants, and e.g. on two different projects for two different compa-
-nies. The user might then want to create two different VMs: "Corporate-A" and "Corporate-B", to fully iso-
-late those two job engagements from each other.
-```
 The above is just an example of how a user might divide tasks and resources into several VMs (security do-
 mains). Other users might choose a different scheme. E.g. government users might instead prefer to use the
 VMs in a way it follows the well known information classification systems used by many governments e.g.:
 "Non Restricted", "Restricted", "Confidential", "Secret", and "Top Secret".
 
-Additionally there are some default system VMs that are provided automatically. One example is the " **Net-
-work** " VM, which isolates all the world-facing networking code into an unprivileged VM. This protects the
+Additionally there are some default system VMs that are provided automatically. One example is the "**Net-
+work**" VM, which isolates all the world-facing networking code into an unprivileged VM. This protects the
 system when using the network in a potentially hostile environment, such as a hotel or an airport. Even if an
 attacker exploits a potential bug, e.g. in the WiFi driver, this doesn't allow to compromise the system. At
 worst, the user would simply lose network connection, but the user's VMs and data should be safe.
@@ -284,7 +285,7 @@ ning in "Random" VM, and can safely see the "cool new video", regardless of whet
 them also doubles as a malware infector or not.
 
 
-## 2. System architecture overview
+## 2. System architecture overview (OUTDATED)
 
 The figure below shows the Qubes OS architecture from 30,000 feet. Virtual Machines (VMs) are the primar-
 ily building blocks for the system. Qubes architecture optimizes disk (and in the future also memory) usage,
@@ -293,7 +294,7 @@ sharing mechanisms allow to reuse most of the filesystem between VMs, without de
 properties. Intel VT-d and TXT technology allows for creating safe driver domains, that minimize system at-
 tack surface.
 
-_Figure 1. Qubes architecture overview._
+<PLACEHOLDER_IMAGE_1>[![Figure 1. Qubes architecture overview](/images/1.png)](/images/1.png)
 
 One can divide the VMs used by the system into two broad categories: the AppVMs, that are used to host
 various user applications, such as email clients, web browsers, etc, and the SystemVMs (or ServiceVMs)
@@ -302,13 +303,12 @@ that are special in that they are used to provide system-wide services, e.g. net
 Below we describe the functions and basic characteristics of each type of VM. For more detailed technical
 discussion the reader might want to consult further chapters in this document.
 
-**2.1. Common desktop and secure GUI**
+**2.1. Common desktop and secure GUI** (OUTDATED)
 
 One of the main goals of Qubes OS is to provide seamless integration of the various applications hosted in
 different VMs onto a common user desktop, so that it is easy for the not-technical user to work with all the
 applications, regardless of what VMs they are hosted in. Specifically, we assume that all the user applica-
 tions, except for X Window Manager, and management applications, would be hosted in AppVMs.
-
 
 Another important goal is to provide a near-native performance, especially for displaying applications that
 use rich graphics and multimedia, like e.g. Web browsers. It's a natural requirement that the user should e.g.
@@ -317,9 +317,9 @@ be able to comfortably watch movies in applications running in AppVMs.
 Detailed discussion and description of of the secure GUI subsystem implementation is described later in this
 document.
 
-_Figure 2. Qubes common desktop concept._
+<PLACEHOLDER_IMAGE_2>[![Figure 2. Qubes common desktop concept.](/images/2.png)](/images/2.png)
 
-**2.2. The AppVMs**
+**2.2. The AppVMs** (OUTDATED)
 
 AppVMs are the virtual machines used for hosting user applications. For the first releases of Qubes we as-
 sume all AppVMs to run Linux OS. But there is nothing that would prevent extending Qubes OS to support
@@ -331,11 +331,11 @@ only use separate disk storage for user's directory and per-VM settings. This al
 of disk space, which otherwise would be wasted to replicate full OS image for each VM.
 
 We realize that such a design introduces some complexity to the filesystem backend and creates potential
-points of attacks. To address this problem, Qubes architecture introduces dedicated storage domain, that
+points of attacks. To address this problem, Qubes architecture introduces the dedicated storage domain, that
 sandboxes all the disk and file system storage code, so that even in case it got compromised, no harm can
 be done to the rest of the system.
 
-**2.3. The network domain**
+**2.3. The network domain** (OUTDATED)
 
 In a typical operating system like Window or Linux, the core networking code, that includes network card
 drivers and various protocol stacks (802.11, TCP/IP, etc), runs in the kernel. This means that a potential bug
@@ -348,7 +348,6 @@ leged VM, called the Network Domain.
 The network domain has direct access to the networking hardware, i.e. the WiFi and ethernet cards. The
 access is granted via Intel VT-d technology, that allows for safe device assignment to unprivileged code.
 
-
 When a potential bug in the networking code, e.g. in the WiFi driver, is exploited by an attacker, all that the
 attacker can gain is the control over the network domain, but not on any other VM. This doesn't give the at-
 tacker any advantage comparing to what he or she can already do when controlling e.g. the hotel LAN or
@@ -357,7 +356,7 @@ ing man-in-the-middle attacks). Particularly, it's expected that all security-se
 hosted in other domains) use some form of cryptography-protected network protocols, such as SSL, VPN, or
 SSH.
 
-**2.4. The storage domain**
+**2.4. The storage domain** (OUTDATED)
 
 As mentioned earlier, Qubes tries to optimize disk usage by virtual machines. The sophisticated file sharing
 mechanisms (e.g. copy-on-write filesystem) require complex code on the backend side. Having such a code
@@ -375,12 +374,12 @@ solve this problem by using cryptography to protect the filesystems, so that the
 confidential data owned by other domains, nor it could modify (in a meaningful way) the shared root filesys-
 tems. Additionally we make use of Intel Trusted Execution Technology (TXT) in order to prevent modification
 of the system boot code. This means that the storage domain, if compromised by the attacker, can, in the
-worst case, make the system, or select AppVMs, unbootable but cannot compromise the system, e.g. by in-
+worst case, make the system, or select (?) AppVMs, unbootable but cannot compromise the system, e.g. by in-
 stalling backdoors or rootkits and steal the user data.
 
 The more in-depth description of the storage domain architecture is provided later in the document.
 
-**2.5. The GUI/administrative domain (Dom0)**
+**2.5. The GUI/administrative domain (Dom0)** (OUTDATED)
 
 The GUI domain is the one that has direct access to the graphics device, as well as input devices, such as
 keyboard and mouse. The GUI domain runs the X server which displays the user desktop, and the Window
@@ -404,9 +403,9 @@ same as the administrative domain (Dom0). This might change in the future. See a
 sion about this problem in the chapter dedicated to the GUI.
 
 
-## 3. The hypervisor and the administrative domain
+## 3. The hypervisor and the administrative domain (OUTDATED)
 
-**3.1. The role of the hypervisor**
+**3.1. The role of the hypervisor** (OUTDATED)
 
 The hypervisor is the single most security critical element in the system. It is the hypervisor that provides
 isolation between different virtual machines.
@@ -414,11 +413,11 @@ isolation between different virtual machines.
 A single bug in the hypervisor can result in full system compromise. It's not possible to sandbox the hypervi-
 sor and thus, special care should be paid when choosing the best hypervisor for Qubes OS.
 
-There are currently two popular, open source hypervisors actively being developed: the _Xen hypervisor_^1 and
-the _Linux Kernel-based Virtual Machine_ (KVM)^2. Below we discuss why we believe that the Xen hypervisor
+There are currently two popular, open source hypervisors actively being developed: the _Xen hypervisor_^1^ and
+the _Linux Kernel-based Virtual Machine_ (KVM)^2^. Below we discuss why we believe that the Xen hypervisor
 architecture is better suited for Qubes OS.
 
-**3.2. Xen vs. KVM security architecture comparison**
+**3.2. Xen vs. KVM security architecture comparison** (OUTDATED)
 
 Most Xen advocates would dismiss KVM immediately by saying that it's not a true bare-metal hypervisor, but
 rather more of a type II hypervisor added on top of (fat and ugly) Linux kernel. The KVM fans would argue
@@ -441,25 +440,25 @@ However it's not entirely true. Particularly the hypervisor still uses (or is fr
 infrastructure, with all its drivers and internal interfaces. This makes the line between what code in the Linux
 kernel is, and what is not, used for handling various VM-generated events, to be blurry. This is not the case
 when we consider a true bare-metal hypervisor like Xen. In Xen, at no point does the execution path jump
-out of the hypervisor to e.g. Dom0^3. Everything is contained within the hypervisor. Consequently it's easier to
+out of the hypervisor to e.g. Dom0^3^. Everything is contained within the hypervisor. Consequently it's easier to
 perform the careful security code audit of the Xen hypervisor, as it's clear which code really belongs to the
 hypervisor.
 
 At the same time the above argument cannot be automatically transfered to Xen's Dom0 code. The main
-reason is that it is possible to move all the drivers and driver backends out of Dom0^4. The same is true for
-moving the IO Device Emulator (ioemu) out of Dom0^5.
+reason is that it is possible to move all the drivers and driver backends out of Dom0^4^. The same is true for
+moving the IO Device Emulator (ioemu) out of Dom0^5^.
 
 The only element (that is accessible to VMs) that must be left in Dom0 is the XenStore daemon, that is re-
 sponsible for managing a directory of system-wide parameters (e.g. where is each of the backend driver lo-
 cated). That represents a very minimal amount of code that needs to be reviewed.
 
-(^1) [http://xen.org](http://xen.org)
-(^2) [http://linux-kvm.org](http://linux-kvm.org)
-(^3) Of course there are hypercalls that result in triggering events in Dom0, so code execution in Dom0, but that is clear from their defini-
+(^1^) [http://xen.org](http://xen.org)
+(^2^) [http://linux-kvm.org](http://linux-kvm.org)
+(^3^) Of course there are hypercalls that result in triggering events in Dom0, so code execution in Dom0, but that is clear from their defini-
 tion, e.g. hypercalls used to deliver events to guests.
-(^4) In general this is a non-trivial task. E.g. special care should be paid when creating a disk driver domain. See the discussion later in this
+(^4^) In general this is a non-trivial task. E.g. special care should be paid when creating a disk driver domain. See the discussion later in this
 document on how to create a truly non-security-critical disk driver domain.
-(^5) If one doesn't need to run HVM guests, e.g. Windows, and runs only PV guests in Xen, then it's possible to get rid of the I/O Emulator
+(^5^) If one doesn't need to run HVM guests, e.g. Windows, and runs only PV guests in Xen, then it's possible to get rid of the I/O Emulator
 entirely. Otherwise, one can use the "stub-domain" mechanism introduced in Xen 3.3, that allows to host the I/O emulator in a special
 VM dedicated to each HVM machine.
 
