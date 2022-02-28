@@ -1,7 +1,15 @@
-# Qubes OS Architecture
+---
+lang: en
+layout: doc ?
+permalink: ?
+redirect_from:
+- ?
+ref: ?
+title: Qubes OS Architecture
+---
 
 ```
-Version 0.3 (markdown edition)
+Version 0.3
 January 2010
 ```
 ```
@@ -15,6 +23,8 @@ Invisible Things Lab
 rafal@invisiblethingslab.com
 ```
 
+<IMAGE_ITL-LOGO>
+
 This pre-release version of this document is _not_ intended for distribution to wide audience. Any use of this
 document, including copying, quoting, or distribution, requires written permissions from the copyright owner.
 
@@ -24,18 +34,20 @@ Copyright © by Invisible Things Lab, 2010, All rights reserved.
 ## Table of Contents
 
 
-- 1. Introduction
+1. Introduction
    - Problems with current Operating Systems
    - Why new OS?
    - How does virtualization enable security?
    - Qubes security model: a practical example
-- 2. System architecture overview
+
+2. System architecture overview
    - Common desktop and secure GUI
    - The AppVMs
    - The network domain
    - The storage domain
    - The GUI/administrative domain (Dom0)
-- 3. The hypervisor and the administrative domain
+
+3. The hypervisor and the administrative domain
    - The role of the hypervisor
    - Xen vs. KVM security architecture comparison
       - The thin vs. fat hypervisor argument
@@ -51,7 +63,8 @@ Copyright © by Invisible Things Lab, 2010, All rights reserved.
    - Power management and ACPI support
       - ACPI security concerns
       - Preventing ACPI abusing attacks
-- 4. The AppVMs
+
+4. The AppVMs
    - Sharing the Root FS among VMs
    - Inter-VM file exchange
    - Network policy enforcement
@@ -61,7 +74,8 @@ Copyright © by Invisible Things Lab, 2010, All rights reserved.
    - AppVM centralized updates
    - AppVM trusted booting
    - Runtime integrity verification of running AppVMs
-- 5. Secure GUI
+
+5. Secure GUI
    - Secure GUI challenges
    - GUI subsystem location: DomX vs. Dom0
    - Qubes GUI architecture
@@ -71,12 +85,14 @@ Copyright © by Invisible Things Lab, 2010, All rights reserved.
       - Clipboard protocol for the "paste" operation
       - Why is the clipboard protocol secure?
    - Audio support
-- 6. Secure networking
+
+6. Secure networking
    - The network domain
    - No Inter-VM networking
    - The Net domain user Interface
    - The optional VPN domain
-- 7. Secure storage
+
+7. Secure storage
    - The Storage Domain
    - System boot process
    - Evil Maid Attack prevention
@@ -90,7 +106,8 @@ Copyright © by Invisible Things Lab, 2010, All rights reserved.
    - Making backups
       - Making full backups using storage domain
       - Making incremental backups (using Dom0)
-- 8. Analysis of potential attack vectors
+
+8. Analysis of potential attack vectors
    - 1-stage vs. 2-stage attacks
    - Potential attacks vectors from any VM (1-stage attacks)
       - Potential bugs in the hypervisor
