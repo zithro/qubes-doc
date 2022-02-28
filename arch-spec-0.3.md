@@ -428,7 +428,7 @@ much regular Linux system, which in the end comes down to pretty comparable code
 
 Both of those arguments are oversimplifications, however.
 
-#### The thin vs. fat hypervisor argument
+#### The thin vs. fat hypervisor argument (OUTDATED)
 
 In KVM architecture each VM is just another type of a Linux usermode process. The exception being that
 such a "VM process" doesn't have access to the standard Linux system call interface, but instead can inter-
@@ -463,7 +463,7 @@ entirely. Otherwise, one can use the "stub-domain" mechanism introduced in Xen 3
 VM dedicated to each HVM machine.
 
 
-#### The I/O Emulation vs. PV drivers
+#### The I/O Emulation vs. PV drivers (OUTDATED)
 
 KVM uses full virtualization approach for all its virtual machines. This means that every virtual machine in
 KVM must have an associated I/O emulator. KVM uses the open source _qemu_ emulator for this purpose. In
@@ -482,12 +482,12 @@ tor. They differ, however, in the way the try to protect the system from a compr
 KVM uses standard Linux security mechanisms to isolate and contain the I/O emulator process, such as ad-
 dress space isolation and standard ACL mechanisms. Those can be further extended by using e.g. SELinux
 sandboxing. This means that the isolation quality that KVM provides cannot be significantly better than what
-a regular Linux kernel can provide to isolate usermode processes^6.
+a regular Linux kernel can provide to isolate usermode processes^6^.
 
 Xen uses virtualization for the I/O emulator isolation, specifically para virtualization, just in the very same way
-as it is used for regular VM isolation, and doesn't relay on Linux to provide any isolation.
+as it is used for regular VM isolation, and doesn't rely on Linux to provide any isolation.
 
-#### Driver domains support
+#### Driver domains support (OUTDATED)
 
 A very essential feature for the Qubes OS is the ability to sandbox various drivers, so that even in the case of
 a bug in a driver, the system could be protected against compromise. One example here could be a buggy
@@ -496,7 +496,7 @@ lounge or in a hotel. Another example could be a bug in the disk driver or virtu
 could be exploited by the attacker from one of the (lesser-privileged) VM in order to compromise other
 (more-privileged) VMs.
 
-In other to mitigate such situations, Qubes architecture assumes existence of several so called driver do-
+In order to mitigate such situations, Qubes architecture assumes existence of several so called driver do-
 mains. A driver domain is an unprivileged PV-domain that has been securely granted access to certain PCI
 device (e.g. the network card or disk controller) using Intel VT-d. This means that e.g. all the networking code
 (WiFi drivers, stack, TCP/IP stack, DHCP client) is located in an unprivileged domain, rather than in Dom0.
@@ -511,7 +511,7 @@ domains, each driver domain would still need to make use of the I/O emulator run
 plained in the previous paragraph, this would diminish the isolation strength of a driver domain on a KVM
 system.
 
-#### Summary
+#### Summary (OUTDATED)
 
 We believe that the Xen hypervisor architecture better suits the needs of our project. Xen hypervisor is very
 small comparing to Linux kernel, which makes it substantially easier to audit for security problems. Xen al-
@@ -523,12 +523,12 @@ KVM relies on the Linux kernel to provide isolation, e.g. for the I/O emulator p
 as secure as Xen's isolation based on virtualization enforced by thin hypervisor. KVM also doesn't support
 driver domains.
 
-(^6) Assuming the I/O emulator is subject to compromise, which is a reasonable, and backed up in its history, assumption.
+(^6^) Assuming the I/O emulator is subject to compromise, which is a reasonable, and backed up in its history, assumption.
 
 
-**3.3. Securing the hypervisor**
+**3.3. Securing the hypervisor** (OUTDATED)
 
-#### Formal security proofs?
+#### Formal security proofs? (OUTDATED)
 
 It would be nice if it was possible to formally prove correctness of the hypervisor code. Unfortunately this
 doesn't seem to be feasible for software that interacts with commodity PC hardware (x86 architecture). Par-
@@ -537,11 +537,11 @@ models of all the hardware that the hypervisor can interact with, including e.g.
 (MCH), which seems highly nontrivial to create.
 
 For instance, the recently published paper on formally proving the correctness of well known seL4 micro-
-kernel^7 , explicitly states that only the ARM port (and only for non-SMP systems) has been proven, while the
-x86 port is still left to be formally verified in the future. More over, the paper states that e.g. the memory
-management has been pushed of out of the microkernel to the usermode process, and that this process has
+kernel^7^, explicitly states that only the ARM port (and only for non-SMP systems) has been proven, while the
+x86 port is still left to be formally verified in the future. Moreover, the paper states that e.g. the memory
+management has been pushed out of the microkernel to the usermode process, and that this process has
 not be contained within the proof. They admit, however, that this process is part of the TCB, and so eventu-
-ally would have to also be proved. One can easily imagine that in case of a general purpose OS, based on
+ally would have also to be proved. One can easily imagine that in case of a general purpose OS, based on
 such a microkernel, there would be more usermode processes that would also be part of the TCB and hence
 would have to be formally proved, e.g. the filesystem server.
 
@@ -552,19 +552,19 @@ prove correctness of every single driver, which is unfeasible in reality. Howeve
 support to the seL4 microkernel might likely result in rendering the formal proving much more difficult.
 
 Additionally certain peculiarities of the x86 platform, like the SMM mode, might also be difficult to account
-for^8.
+for^8^.
 
 Thus, we don't expect any bare-metal hypervisor or microkernel for commodity x86 PC hardware to be for-
-mally proved secure anytime in the near future. Consequently other, more pragmatic, approaches are
+mally proved secure anytime in the near future. Consequently other, more pragmatic approaches are
 needed in order to secure the hypervisor. The best approach we can think of is the manual audit of the hy-
 pervisor code and to keep the hypervisor as small and simple as possible. Additionally one might apply some
 anti-exploitation mechanisms, like e.g. non-executable memory.
 
 In the future, when formally proved hypervisors become a reality, there is no reason why Qubes should not
-switch to such a hypervisor. Particularly, the rest of the architecture proposed in this document (secure GU,
+switch to such a hypervisor. Particularly, the rest of the architecture proposed in this document (secure GUI,
 secure storage domain, etc) would still be required even if the system used formally verified hypervisor.
 
-#### Reducing hypervisor footprint
+#### Reducing hypervisor footprint (OUTDATED)
 
 In order to reduce the hypervisor footprint, one might consider to remove certain features from the hypervi-
 sor. We expect that Qubes OS might be distributed with different versions of the hypervisor, depending on
@@ -572,9 +572,9 @@ the specific needs of different user groups. E.g. the government users might be 
 secure version of the hypervisor with minimal amount of extra features (e.g. with no HVM support, no ACPI
 support), while other users with not so strict security constrains might want to use a fully-featured hypervisor,
 even though its code footprint might be twice as big, and consequently the risk of a hidden security bug
-higher^9.
+higher^9^.
 
-#### Anti-exploitation mechanisms in the hypervisor
+#### Anti-exploitation mechanisms in the hypervisor (OUTDATED)
 
 Currently Xen doesn't make use of any well known anti-exploitation techniques, like Non-Executable memory
 (NX) or Address Space Layout Randomization (ASLR).
@@ -585,14 +585,14 @@ cause NX protection alone can easily be circumvented using the so called return-
 nique, where the attacker jumps into the code snippets that are already present (as they are parts of the le-
 gal code) in the address space of the target being exploited.
 
-(^7) [http://ertos.nicta.com.au/publications/papers/Klein_EHACDEEKNSTW_09.pdf](http://ertos.nicta.com.au/publications/papers/Klein_EHACDEEKNSTW_09.pdf)
-(^8) A buggy SMM handler might e.g. overwrite the microkernel memory, perhaps as a result of some malicious triggering actions by some
+(^7^) [http://ertos.nicta.com.au/publications/papers/Klein_EHACDEEKNSTW_09.pdf](http://ertos.nicta.com.au/publications/papers/Klein_EHACDEEKNSTW_09.pdf)
+(^8^) A buggy SMM handler might e.g. overwrite the microkernel memory, perhaps as a result of some malicious triggering actions by some
 usermode process.
-(^9) Although it's currently not clear if e.g. removing the HVM code from Xen really reduces the effective footprint, understood as the code
-reachable from the gust, if the user only uses the PV guests. To Be Determined.
+(^9^) Although it's currently not clear if e.g. removing the HVM code from Xen really reduces the effective footprint, understood as the code
+reachable from the guest, if the user only uses the PV guests. To Be Determined.
 
 
-However, in case of Xen, the potential benefits of using NX marking are questionable. This is because IA
+However, in case of Xen, the potential benefits of using NX marking are questionable. This is because IA32
 architecture, as implemented on modern Intel and AMD processors, allows the CPU that executes in ring0 to
 jump and execute code kept on usermode pages. So the attacker can always keep the shellcode in the us-
 ermode, in this case, e.g. in the VM's kernel or process, and can bypass all the NX protections implemented
@@ -600,12 +600,12 @@ in the Xen hypervisor. The only solution to this problem would be to modify the 
 would be possible to disable this mode of operation (e.g. via some MSR register).
 
 ASLR does make sense though. Particularly, one might modify all the memory allocation functions and also
-attempt to make the Xen code relocatable, so that each time the Xen is load it gets loaded at a different ad-
+attempt to make the Xen code relocatable, so that each time the Xen is loaded it gets loaded at a different ad-
 dress. On the other hand such changes might be non-trivial, and perhaps might introduce some more com-
 plexity to the hypervisor. Further research is needed to decide if addition of any anti-exploitation mechanisms
 is worth the effort.
 
-#### Reducing Inter-VM covert channels
+#### Reducing Inter-VM covert channels (OUTDATED)
 
 User with very high security requirement might not only be concerned about the "classic" security bugs
 (which lead to system compromises, e.g. installing malware), but also about more subtle security problems
@@ -654,7 +654,7 @@ In the end, there will probably be just two versions of the hypervisor available
     for PV Linux), and with additional restrictions to prevent potential inter-VM communication.
 
 
-**3.4. The administrative domain (Dom0)**
+**3.4. The administrative domain (Dom0)** (OUTDATED)
 
 The administrative domain, also referred to as Dom0, is almost as privileged as the hypervisor^10. Conse-
 quently we took special care to limit the amount of world-facing and VM-facing code running in Dom0. In fact
