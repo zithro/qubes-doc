@@ -656,7 +656,7 @@ In the end, there will probably be just two versions of the hypervisor available
 
 **3.4. The administrative domain (Dom0)** (OUTDATED)
 
-The administrative domain, also referred to as Dom0, is almost as privileged as the hypervisor^10. Conse-
+The administrative domain, also referred to as Dom0, is almost as privileged as the hypervisor^10^. Conse-
 quently we took special care to limit the amount of world-facing and VM-facing code running in Dom0. In fact
 there is no world-facing code in Dom0 at all (no networking) and the amount of VM-facing is kept at an abso-
 lute minimum (see below), drastically minimizing likelihood of an attack reachable from other VMs.
@@ -668,7 +668,7 @@ Dom0 also hosts the GUI subsystem. While this might seem like lots of code, the 
 VMs and the GUI daemon is extremely slim. The reason to host the GUI subsystem in Dom0, and not in a
 separate domain, comes from the fact that the attacker who compromised the GUI subsystem can effectively
 compromise all the user's VM. This makes the GUI subsystem, by the very definition, almost as privileged as
-Dom0^11.
+Dom0^11^.
 
 Besides the Xen Store and GUI daemon, there is no other code in Dom0 that could be interacted with from
 other VMs. This particularly means that there are no backend drivers in Dom0 -- those have been moved out
@@ -676,21 +676,21 @@ to unprivileged VMs: the network domain and the storage domain.
 
 So, even though Dom0 runs a regular Linux OS (with a kernel that supports Dom0 pvops), the interface to
 Dom0 is very minimal (just GUI and Xen Store), and hence the potential attack surface (and the amount of
-code to audit) if also very minimal.
+code to audit) is also very minimal.
 
 Additionally, because in the Qubes architecture the hypervisor set strict VT-d protections, Dom0 (as well as
 any other AppVM) gets automatic DMA protection from physical attacks originating from bus mastering de-
 vices, like e.g. FireWire or CardBus/PCMCIA devices. This is very important for the laptop users, who other-
-wise might be subject to a trivial physical attacks^12.
+wise might be subject to trivial physical attacks^12^.
 
 Dom0 has access to all secrets used for block device (filesystem) encryption and signing (see the chapter
 about Storage domain for more details). Those secrets are released to Dom0 by the TPM, only if the correct
 (i.e. non-tampered) hypervisor image has been booted, and only if Dom0 kernel and filesystem has been
-non-tampered with. Otherwise Dom0 will not have access to VM's private date.
+non-tampered with. Otherwise Dom0 will not have access to VM's private data.
 
-**3.5. Power management and ACPI support**
+**3.5. Power management and ACPI support** (OUTDATED)
 
-#### ACPI security concerns
+#### ACPI security concerns (OUTDATED)
 
 Every modern operating system contains support for power management -- this includes putting and resum-
 ing the system to and from various sleep states, and also on-the-fly adjustment of e.g. the CPU frequency, or
@@ -708,45 +708,45 @@ its complexity and design, might also cause potential security problems for the 
 Particularly dangerous is the ACPI's interpreted language, ACPI Machine Language, or AML, that is used to
 describe how certain power-management operations should be accomplished by the underlying OS.
 
-(^10) Dom0 cannot modify the hypervisor memory, while the hypervisor can modify Dom0 memory. Still, Dom0 can access and modify all
+(^10^) Dom0 cannot modify the hypervisor memory, while the hypervisor can modify Dom0 memory. Still, Dom0 can access and modify all
 the memory of all the other VMs in the system.
-(^11) In the chapter dedicated to GUI subsystem, there is a detailed discussion about potential benefits of having the GUI subsystem
+(^11^) In the chapter dedicated to GUI subsystem, there is a detailed discussion about potential benefits of having the GUI subsystem
 hosted in a separate domain, and why those benefits are, in the authors opinion, not worth the effort.
-(^12) E.g. in case of most mainstream OSes, which do not use VT-d, it is possible to prepare a specially programmed PCMCIA card that,
+(^12^) E.g. in case of most mainstream OSes, which do not use VT-d, it is possible to prepare a specially programmed PCMCIA card that,
 when inserted into the laptop, can automatically compromise the machine, e.g. by installing a rootkit or backdoor. In that case any laptop
 left unattended for just a few minutes is subject to such an attack.
 
 
-It has been demonstrated first by John Heasman^13 , and later by Loic Duflot^14. Malware that is capable of re-
+It has been demonstrated first by John Heasman^13^, and later by Loic Duflot^14^. Malware that is capable of re-
 flashing the BIOS, or gain control early in the boot process, e.g. as a result of MBR infection, can replace the
 original ACPI tables in memory with malicious ones, so that when later the OS will be interpreting (executing)
 the AML methods, the attacker's code will compromise the OS.
 
 Such an attack could thus theoretically be used by an attacker who gained control over the storage domain
 (see later chapter for details about storage domain implementation). The attacker could then modify the boot
-loader, e.g. the MBR or GRUB, so that the code modify the ACPI tables that are later passed on to Xen and
-Dom0 kernel. Xen doesn't interpret ACPI AML methods, but Dom0 kernel does. Thus the attacker can thus
+loader, e.g. the MBR or GRUB, so that the code modifies the ACPI tables that are later passed on to Xen and
+Dom0 kernel. Xen doesn't interpret ACPI AML methods, but Dom0 kernel does. Thus the attacker can
 potentially use this attack to compromise Dom0, despite Intel TXT being used to assure trusted boot (see
-later for trusted boot description in Qubes)^15.
+later for trusted boot description in Qubes)^15^.
 
-#### Preventing ACPI abusing attacks
+#### Preventing ACPI abusing attacks (OUTDATED)
 
 Even though the attacker would need to first gain control over the storage domain in order to proceed with
 this attack, in Qubes architecture we would like to assume that the storage domain compromise is security
 non-critical, so it's important to consider workarounds to prevent this attack.
 
-1. **Disable ACPI processing in Dom0.** This is the most straightforward solution, but might not be suitable
+**1. Disable ACPI processing in Dom0.** This is the most straightforward solution, but might not be suitable
     for most users, especially for laptop users. After all power management is an important feature of mod-
     ern platforms.
-2. **Verify ACPI methods.** Theoretically it might be possible to somehow verify if the particular ACPI method
-    is not malicious before executing it, e.g. if it only access the power-management related I/O registers.
+**2. Verify ACPI methods.** Theoretically it might be possible to somehow verify if the particular ACPI method
+    is not malicious before executing it, e.g. if it only accesses the power-management related I/O registers.
     Creating such an ACPI verifier might however be non-trivial and we are not aware of any research in this
     area.
 **3. Measure ACPI methods as part of the TXT launch.** The TXT loader (e.g. tboot.gz) can be modified
-    so that it first copies the platform ACPI tables onto the TXT heap^16 , and later measures them (with the
+    so that it first copies the platform ACPI tables onto the TXT heap^16^, and later measures them (with the
     results places in e.g. PCR18 register). This would prevent any modifications of the ACPI tables after the
     system initial installation (we naturally assume that the platform's original ACPI tables were not mali-
-    cious). However, as pointed out by Loic Duflot^17 , effective measuring of ACPI tables might be non-trivial,
+    cious). However, as pointed out by Loic Duflot^17^, effective measuring of ACPI tables might be non-trivial,
     because of their highly nested nature (one table pointed out by a pointer in another table, etc).
 **4. Provide good known ACPI tables.** Instead of measuring the ACPI tables, we might copy the original
     ACPI tables (that we observed during the installation of the system, again we assume the system is not-
@@ -757,15 +757,15 @@ non-critical, so it's important to consider workarounds to prevent this attack.
 We believe the last solution (providing good known ACPI tables) is the simplest and most effective to imple-
 ment, and thus is recommended as a solution to the ACPI attacks problem.
 
-(^13) Implementing and Detecting an ACPI BIOS rootkit, [http://www.blackhat.com/presentations/bh-europe-06/bh-eu-06-Heasman.pdf](http://www.blackhat.com/presentations/bh-europe-06/bh-eu-06-Heasman.pdf)
-(^14) ACPI Design Principles and Concerns, [http://www.ssi.gouv.fr/IMG/pdf/article_acpi.pdf](http://www.ssi.gouv.fr/IMG/pdf/article_acpi.pdf)
-(^15) One should note that, strictly speaking, this is not an attack against TXT -- rather it's an attack on one of the entities loaded via TXT
+(^13^) Implementing and Detecting an ACPI BIOS rootkit, [http://www.blackhat.com/presentations/bh-europe-06/bh-eu-06-Heasman.pdf](http://www.blackhat.com/presentations/bh-europe-06/bh-eu-06-Heasman.pdf)
+(^14^) ACPI Design Principles and Concerns, [http://www.ssi.gouv.fr/IMG/pdf/article_acpi.pdf](http://www.ssi.gouv.fr/IMG/pdf/article_acpi.pdf)
+(^15^) One should note that, strictly speaking, this is not an attack against TXT -- rather it's an attack on one of the entities loaded via TXT
 (Dom0 in that case) that chooses to trust unverified input (ACPI tabled provided by BIOS), that turns out to be malicious.
-(^16) This is already being done by tboot for ACPI DMAR tables.
-(^17) In private conversation.
+(^16^) This is already being done by tboot for ACPI DMAR tables.
+(^17^) In private conversation.
 
 
-## 4. The AppVMs
+## 4. The AppVMs (OUTDATED)
 
 The AppVMs are the VMs used to host user's applications. We assume that all of the user's applications run
 in AppVMs and none of them run in Dom0. The only user-visible applications running in Dom0 are the Win-
@@ -779,16 +779,16 @@ corresponding AppVMs). The user is offered, of course, an ability to move the fi
 other one, as well as the ability to store them on external storage devices like USB flash drives.
 
 It is assumed that most of the AppVMs would be based on the same Linux distribution, which makes it pos-
-sible share the root file system among them all (in a read-only manner, of course).
+sible to share the root file system among them all (in a read-only manner, of course).
 
 Qubes provides a special stub-application called AppViewer, that is used to bring all the user applications
 from various AppVMs onto a common desktop in Dom0 and allows the user to interact with them just as if
 the applications were natively running there, and not in other VMs. For this to work, each AppVM must run a
-special agent called QubesWM, that can be thought of as of a dedicated Window Manager that the
+special agent called QubesWM, that can be thought of as a dedicated Window Manager that the
 AppViewers interact with. The AppViewer and QubesWM are described in more detail in the next chapter
 devoted to secure GUI implementation.
 
-**4.1. Sharing the Root FS among VMs**
+**4.1. Sharing the Root FS among VMs** (OUTDATED)
 
 It is expected that the user will use many AppVMs: at least three in case of most users, and probably over 10
 in case of more security paranoid users. It's thus very important to use an effective scheme for sharing the
@@ -817,15 +817,14 @@ known only to the AppVM and Dom0 (encryption is done by LUKS). The read-only blo
 root filesystem, on the other hand, is signed, and each AppVM verifies this signature when using the block
 device (this is done on the fly on a per-block basis). Those extra security measures are needed to make the
 storage domain non-security-critical, so that a potential compromise of the storage domain doesn't allow to
-compromise the rest of the system^18.
+compromise the rest of the system^18^.
 
 The diagram below represents the architecture of Filesystem sharing among AppVMs.
 
-(^18) Additionally, also Intel(R) TXT is needed to make the storage domain security non-critical. See the appropriate chapter later in this
+(^18^) Additionally, also Intel(R) TXT is needed to make the storage domain security non-critical. See the appropriate chapter later in this
 document for more details.
 
-
-Figure 1. Secure file system sharing among many AppVMs.
+<PLACEHOLDER_IMAGE_3>[![Figure 3. Secure file system sharing among many AppVMs.](/images/3.png)](/images/3.png)
 
 It might be tempting to allow the user to explicitly mark certain VM's COW files as persistent. Such an opera-
 tion would allow to preserve changes to the root filesystem to only certain AppVMs. E.g. the user might want
@@ -850,8 +849,7 @@ file explicitly in Dom0, we avoid this attack, and ensure that each AppVM would 
 root filesystem (provided by the storage domain) before mounting it (and would not mount it, if the signature
 is wrong or missing).
 
-
-**4.2. Inter-VM file exchange**
+**4.2. Inter-VM file exchange** (OUTDATED)
 
 It is essential to provide the user with a simple and effective, yet secure, way of exchanging files between
 various AppVMs. Generally, there are two, independent, security challenges that should be considered here:
@@ -897,9 +895,9 @@ mains communicate with, is running in the unprivileged Storage domain, so even i
 malicious and could exploit a potential bug in this daemon, this doesn't threaten the security of the rest of the
 system, including the other domain taking part in the file exchange.
 
-**4.3. Network policy enforcement**
+**4.3. Network policy enforcement** (OUTDATED)
 
-#### Rationale for per-VM network policy enforcement
+#### Rationale for per-VM network policy enforcement (OUTDATED)
 
 It's up to the user to define the policy of how to use AppVMs. E.g. the user might want to dedicate one VM to
 use for corporate email and file exchange, and perhaps a different VM to use only for internet banking. Qu-
@@ -910,8 +908,6 @@ some mechanisms built into the system that would help the user to enforce the po
 want to expect that the AppVM that is to be used for corporate email only is only allowed to initialize IMAP
 and SMTP connections to the corporate email server and nothing elsewhere. Similarly, the AppVM assigned
 for internet banking might be allowed to only establish HTTPS connections only to the user's banking web
-
-
 server. Perhaps the more paranoid user would like to add server-side SSL certificate verification to those
 restrictions.
 
@@ -941,7 +937,7 @@ connection to the email client (which is the main reason for having this applica
 
 It's thus essential to have a mechanism to enforce the user defined network policy in a per-VM manner.
 
-#### Network policy enforcer location
+#### Network policy enforcer location (OUTDATED)
 
 One might think that the Network domain is the right place where the per-VM network policy enforcement
 should be implemented. After all the assumption is that all the VMs would be connecting to the outside world
@@ -974,12 +970,10 @@ the Network domain.
 
 Of course, we can imagine that in the future versions of Qubes OS, the user would have an easy-to-use tool
 with simple user interface that would be used to help the user to configure the enforced in each AppVM, e.g.
-
-
 by automatically generating all the needed iptables rules in a form of a ready-to-use script that would be later
 copied to each AppVM.
 
-**4.4. AppVM installation and initial setup**
+**4.4. AppVM installation and initial setup** (OUTDATED)
 
 It is expected that users will be provided with the AppVM ready-to-use images, as part of the Qubes OS dis-
 tribution. However, some more advanced users might want to have an option to install custom operating sys-
@@ -990,54 +984,54 @@ In any case the procedure for creating a new image of AppVM should be the follow
 
 1. Boot the OS installer into a "full screen mode".
 
-```
-The term "full screen mode" used here, means that the OS installer should be provided with VGA emula-
-tion (like for a HVM guest) and we would like to see the whole screen of this VM in a window in Dom0's
-AppViewer. This step provides potential security weakness if the OS we are trying to install was mali-
-cious, e.g. if the OS installer tried exploit the VGA emulator. To account for such an attack, we should run
-the VGA emulator (and perhaps all other I/0 emulation if wanted to run the guest in HVM mode) in a
-separate PV domain, similar to Xen stub domain, with an exception that such domain should also have
-an X server and our GUI agent running, to make it possible to display the guest's emulated VGA in
-AppViewer as if it was a normal X application.
-```
+   The term "full screen mode" used here, means that the OS installer should be provided with VGA emula-
+   tion (like for a HVM guest) and we would like to see the whole screen of this VM in a window in Dom0's
+   AppViewer. This step provides potential security weaknesses if the OS we are trying to install was mali-
+   cious, e.g. if the OS installer tried to exploit the VGA emulator. To account for such an attack, we should
+   run the VGA emulator (and perhaps all other I/0 emulation if wanted to run the guest in HVM mode) in a
+   separate PV domain, similar to Xen stub domain, with an exception that such domain should also have
+   an X server and our GUI agent running, to make it possible to display the guest's emulated VGA in
+   AppViewer as if it was a normal X application.
+
 2. Boot the newly installed OS
 
-```
-Once the system has been installed using the regular installer (see previous point), the next step is to
-boot the system, also in "full screen mode" and get administrative (root) access to the system, e.g. by
-opening a console.
-```
-3. If the OS to be installed is Linux based, and we plan to use root filesystem sharing, to be able to easily
-    create instances of AppVMs based on this OS, then we need to make sure that the system will use the
-    kernel and initrd files provided by Dom0, as part of domain building process. Particularly, the initrd file to
-    be used by this system should take care about verifying and mounting the root filesystem, as it has been
-    described earlier in this chapter.
-    It's currently not clear how to support shared root filesystem in case of other-than Linux OSes, like e.g.
-    Windows. This is left to be determined later. Until this is resolved, installation of AppVMs based on other
-    OSes could probably skip this step (the root filesystem for an ApPVM that doesn't use sharing, can be
-    simply encrypted with a per-VM key, so no need to verify any signature by the early boot script -- the
-    storage domain would not be able to modify this filesystem anyway).
-4. The next step is to install the GUI agent, configure the X server (e.g. to use the dummy driver, and to use
-    the XComposite extension), and to install additional scripts that would be starting the GUI agent on each
-    boot of the AppVM.
-5. The last step includes some final configuration activities that would depend on the actual OS being in-
-    stalled and its purpose. E.g. Linux-based AppVMs with shared root filesystem might require disabling of
-    access time recording on the root filesystem, to avoid unnecessary growth of the COW files and to opti-
-    mize performance. Also, one would most likely want to disable automatic updates, as they can be han-
-    dled in a centralized way, as described below.
-6. Finally we should reboot the VM, and since now on it should be possible to use it in a AppVM-fashion,
-    i.e. via the AppViewer application in Dom0.
+   Once the system has been installed using the regular installer (see previous point), the next step is to
+   boot the system, also in "full screen mode" and get administrative (root) access to the system, e.g. by
+   opening a console.
 
-**4.5. AppVM centralized updates**
+3. If the OS to be installed is Linux based, and we plan to use root filesystem sharing, to be able to easily
+   create instances of AppVMs based on this OS, then we need to make sure that the system will use the
+   kernel and initrd files provided by Dom0, as part of domain building process. Particularly, the initrd file to
+   be used by this system should take care about verifying and mounting the root filesystem, as it has been
+   described earlier in this chapter.
+   It's currently not clear how to support shared root filesystem in case of other-than Linux OSes, like e.g.
+   Windows. This is left to be determined later. Until this is resolved, installation of AppVMs based on other
+   OSes could probably skip this step (the root filesystem for an ApPVM that doesn't use sharing, can be
+   simply encrypted with a per-VM key, so no need to verify any signature by the early boot script -- the
+   storage domain would not be able to modify this filesystem anyway).
+
+4. The next step is to install the GUI agent, configure the X server (e.g. to use the dummy driver, and to use
+   the XComposite extension), and to install additional scripts that would be starting the GUI agent on each
+   boot of the AppVM.
+
+5. The last step includes some final configuration activities that would depend on the actual OS being in-
+   stalled and its purpose. E.g. Linux-based AppVMs with shared root filesystem might require disabling of
+   access time recording on the root filesystem, to avoid unnecessary growth of the COW files and to opti-
+   mize performance. Also, one would most likely want to disable automatic updates, as they can be han-
+   dled in a centralized way, as described below.
+
+6. Finally we should reboot the VM, and since now on it should be possible to use it in a AppVM-fashion,
+   i.e. via the AppViewer application in Dom0.
+
+**4.5. AppVM centralized updates** (OUTDATED)
 
 Because all of the AppVMs (or at least most of) share the same root filesystem, it's desirable to have a sim-
 ple method to perform automatic updates of this file system, which will result in all the applications being
-automatically updated in All AppVMs at once.
+automatically updated in ALL AppVMs at once.
 
 In order to perform such global AppVMs update, we need to first shut down all the VMs and then start a spe-
 cial UpdateVM that will have read-write access to the root filesystem block device, and also to the signing
 key so that it can resign this device.
-
 
 Obviously this allows the UpdateVM to potentially compromise all the AppVMs based on the root filesystem
 that the UpdateVM was granted update access. This means that the UpdateVM should be strictly restricted
@@ -1065,20 +1059,20 @@ for the network domain, that sometimes must be updated to support new hardware. 
 however, do not deal with any real hardware, as they use Xen-provided frontend drivers to access disk and
 network virtual devices.
 
-**4.6. AppVM trusted booting**
+**4.6. AppVM trusted booting** (OUTDATED)
 
 One interesting side effect of having the common read-only root filesystem shared among all the AppVMs, is
 that each time the VM boots, it boots into a "clean", i.e. non compromised, state. Indeed, even if the VM got
 somehow compromised, e.g. via a web browser exploit, the next time it boots all the potential changes to the
-root filesystem will be discarded (the COW backing file will be discarded by storage domain^19 ), and every-
+root filesystem will be discarded (the COW backing file will be discarded by storage domain^19^), and every-
 thing, starting from the kernel, through the initrd script, and all the system binaries will be automatically re-
 sorted to the state as they were after the system was installed (or upgraded by the UpgradeVM). This brings
 a very desired security feature for the user.
 
-However, as soon as the user-provided contents becomes executing, this property is lost. For instance, the
+However, as soon as the user-provided contents become executing, this property is lost. For instance, the
 user might have installed some plugins to the commonly used applications, e.g. a flash player plugin for the
 Web browser. Those plugins will, of course, be kept in the user's home directory (it cannot be otherwise, as
-the VM is not allowed to write to the read-only shared root filesystem; whatever it would write there, even if
+the VM is not allowed to write to the read-only shared root filesystem ; whatever it would write there, even if
 the user had root access in the VM, it would get discarded after the next reboot). If one of the plugins was
 malicious, the plugin could compromise the system each time the user starts the application that uses them,
 which might end up being almost always.
@@ -1097,22 +1091,21 @@ However, Qubes should offer the user some options to deal with such scenarios. O
 such problems is to allow the user to create AppVMs that would have non-persistent home directory, i.e. the
 file used to backup the home directory would be discarded after every reboot of this particular AppVM. The
 user might then just use such a one-time AppVM to do a particular task, and later just discard everything, so
-that the next time the user starts the machine is clean.
+that the next time the user starts the machine, it is clean.
 
-(^19) Or reverted to the user's chosen "last known good state".
+(^19^) Or reverted to the user's chosen "last known good state".
 
-
-Another option would be let the user mount the AppVM's home directory into another AppVM, say the "inves-
+Another option would be to let the user mount the AppVM's home directory into another AppVM, say the "inves-
 tigation AppVM", that would contain various tools that an experienced user might use in order to see if any-
 thing is suspicious in the home directory and remove the offending files if needed.
 
 This scenario with compromised home directory presents a much easier task for the investigator, than tradi-
 tional investigation into a compromised system, where virtually every component might be compromised,
-starting from the BIOS an PC devices firmware, through boot loader an kernel, system root fileystem, and on
+starting from the BIOS and PC devices firmware, through boot loader and kernel, system root fileystem, and on
 the home directory ending. Here we "only" need to investigate the home directory for potentially malicious
 modifications.
 
-**4.7. Runtime integrity verification of running AppVMs**
+**4.7. Runtime integrity verification of running AppVMs** (OUTDATED)
 
 It would be desirable if Qubes could also provide a mechanism for runtime verification of the running kernel
 in the AppVMs, to detect potential runtime attacks, e.g. installation of a kernel keylogger or other form of a
@@ -1128,18 +1121,18 @@ that the VM's kernel execution patch cannot jump out to a usermode page, then su
 rather straightforward.
 
 However, besides the problems mentioned above, there remains a problem of the so called Return-oriented
-exploits/rootkits, that could introduce arbitrary programs without injecting any foreign code^20. Another prob-
+exploits/rootkits, that could introduce arbitrary programs without injecting any foreign code^20^. Another prob-
 lem that needs to be answered is how much performance impact the introduction of such a Integrity Scan-
 ning VM would cause.
 
 In other words, this subject is left for further research.
 
-(^20) The reader is references to the Hovav Shacham's Black Hat presentation on _Return-Oriented Programming_
+(^20^) The reader is referenced to the Hovav Shacham's Black Hat presentation on _Return-Oriented Programming_
 (http://cseweb.ucsd.edu/~hovav/talks/blackhat08.html), and also to the Ralf Hund's, Thorsten Holz's, and Felix C. Freiling's paper on
-_Retun-Oriented Rootkits_ (http://www.usenix.org/events/sec09/tech/full_papers/hund.pdf).
+_Return-Oriented Rootkits_ (http://www.usenix.org/events/sec09/tech/full_papers/hund.pdf).
 
 
-## 5. Secure GUI
+## 5. Secure GUI (OUTDATED)
 
 This chapter describes the details of the Qubes graphics (GUI) subsystem architecture. Secure and efficient
 GUI is one of the most important elements of the system.
