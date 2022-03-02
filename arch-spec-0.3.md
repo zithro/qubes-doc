@@ -1137,7 +1137,7 @@ _Return-Oriented Rootkits_ (http://www.usenix.org/events/sec09/tech/full_papers/
 This chapter describes the details of the Qubes graphics (GUI) subsystem architecture. Secure and efficient
 GUI is one of the most important elements of the system.
 
-**5.1. Secure GUI challenges**
+**5.1. Secure GUI challenges** (OUTDATED)
 
 While technically the GUI subsystem is less privileged than the hypervisor, a compromise of this subsystem
 still allows for very severe system compromise. If the attacker gains control over the GUI subsystem (e.g. the
@@ -1160,7 +1160,7 @@ tions.
 At the same time we would like the GUI subsystem to all the near-native user experience, so that e.g. it was
 possible to watch movies played by applications executing on different VMs.
 
-**5.2. GUI subsystem location: DomX vs. Dom0**
+**5.2. GUI subsystem location: DomX vs. Dom0** (OUTDATED)
 
 Before we move on to describe the details of the GUI subsystem architecture in the Qubes OS, we should
 first discuss where the GUI subsystem should be located. We should consider two possible places: in the
@@ -1190,10 +1190,10 @@ Consequently, we believe it is not worth the effort to move the graphics subsyst
 potential security benefits are very minimal, if any.
 
 
-**5.3. Qubes GUI architecture**
+**5.3. Qubes GUI architecture** (OUTDATED)
 
 The figure below shows the basic idea of how Qubes implements secure GUI. In each AppVM there is Qu-
-bes agent running (think of it as of a Window Manager), that is responsible for the following tasks:
+bes agent running (think of it as a Window Manager), that is responsible for the following tasks:
 
 1. Sending notifications to the AppViewer about new windows appearing on the AppVM's virtual desktop.
     For each newly created window, the agent obtains the content of this window (or just the address of the
@@ -1206,7 +1206,7 @@ bes agent running (think of it as of a Window Manager), that is responsible for 
 4. Relaying all the keyboard and mouse input, entered into the corresponding AppViewer window in Dom0,
     to the focused local application.
 
-_Figure 1. GUI subsystem design overview._
+<PLACEHOLDER_IMAGE_4>[![Figure 4. GUI subsystem design overview.](/images/4.png)](/images/4.png)
 
 The communication protocol between the Qubes agent in AppVM and the AppViewer in Dom0 is a simple
 message-based protocol, implemented using the standard Xen Ring buffer protocol (the same that is used
@@ -1215,10 +1215,8 @@ by VMs to communicate e.g. with the Xen Store Daemon).
 We assume that the X server running in the AppVM uses _composition buffer_ to keep track of the content of
 each window (even if its obstructed by other windows). In practice most of the Linux distributions today use
 the Xorg's X servers, and all the recent versions of Xorg server have native support for composition mode
-
-
-provided by the _XComposite_ extension^21. Interestingly other major operating systems, like Mac OS X, and
-Windows^22 , also use composition buffers for window content tracking.
+provided by the _XComposite_ extension^21^. Interestingly other major operating systems, like Mac OS X, and
+Windows^22^ , also use composition buffers for window content tracking.
 
 The composition mode support is essential, because it allows our agent to get unobstructed image of each
 window content, no matter whether they obstruct each other on the virtual desktop or not.
@@ -1241,14 +1239,13 @@ XDamage notifications from the local X server, whenever any of the window on the
 dates (even if it is obstructed). The agent passes those notifications to the AppViewer, using the ring buffer
 protocol mentioned earlier.
 
-_Figure 2. Efficient implementation of AppViewer using composition buffers (requires XComposite extension to be enabled
-in the AppVM's X server)._
+<PLACEHOLDER_IMAGE_5>[![Figure 4. Efficient implementation of AppViewer using composition buffers (requires XComposite extension to be enabled in the AppVM's X server).](/images/4.png)](/images/5.png)
 
-(^21) [http://www.x.org/releases/X11R7.5/doc/compositeproto/compositeproto.txt](http://www.x.org/releases/X11R7.5/doc/compositeproto/compositeproto.txt)
-(^22) Starting from Windows Vista.
+(^21^) [http://www.x.org/releases/X11R7.5/doc/compositeproto/compositeproto.txt](http://www.x.org/releases/X11R7.5/doc/compositeproto/compositeproto.txt)
+(^22^) Starting from Windows Vista.
 
 
-**5.4. Application stubs**
+**5.4. Application stubs** (OUTDATED)
 
 In order to start a new application in AppVM the special program called the AppStub is executed in Dom0.
 This program should take care about first checking if the VM where the particular application is hosted has
@@ -1256,7 +1253,7 @@ already been started, as well as the corresponding AppViewer in Dom0, and later 
 GUI agent in the AppVM to start the particular application (e.g. /usr/bin/firefox) and make sure the
 application started successfully, or otherwise report a problem to the user.
 
-**5.5. Secure clipboard**
+**5.5. Secure clipboard** (OUTDATED)
 
 Secure clipboard that could allow to copy and paste block of data between applications executing in various
 AppVMs is essential for effective use of the system.
@@ -1269,7 +1266,7 @@ outside the scope of this document.
 
 The algorithm specified below should allow for secure clipboard exchange between AppVMs.
 
-#### Clipboard algorithm for the "copy" operation
+#### Clipboard algorithm for the "copy" operation (OUTDATED)
 
 1. The copy operation is initialized by the magic key combination for the copy operation (e.g. Shift-Ctrl-C)
     entered in Dom0 into the focused AppViewer
@@ -1284,7 +1281,7 @@ The algorithm specified below should allow for secure clipboard exchange between
     that the user doesn't mistakenly paste the buffer into any of the Dom0's applications. The user should
     only be allowed to paste the contents of the clipboard buffer into another AppViewer window.
 
-#### Clipboard protocol for the "paste" operation
+#### Clipboard protocol for the "paste" operation (OUTDATED)
 
 1. The paste operation is initialized by the magic key combination for the paste operation (e.g. Shift-Ctrl-V)
     entered in Dom0 into the focused AppViewer
@@ -1294,18 +1291,17 @@ The algorithm specified below should allow for secure clipboard exchange between
     buffer and simulates and initializes the paste operation into the focused application (as if the user
     pressed Ctrl-V locally in the AppVM).
 
-#### Why is the clipboard protocol secure?
+#### Why is the clipboard protocol secure? (OUTDATED)
 
 The proposed clipboard exchange protocol seems to be secure, because the paste operation (so, retrieving
 the contents of the clipboard buffer) is always initialized explicitly by the user in Dom0. Consequently the un-
 authorized VMs do not have a chance to steal the contents of the clipboard buffer.
 
-**5.6. Audio support**
+**5.6. Audio support** (OUTDATED)
 
 The applications executing in AppVMs might generate audio, e.g. the Web browser might generate audio as
-a result of the user watching a You Tube video. It is thus important to bring the sound from the VMs to Dom0,
+a result of the user watching a YouTube video. It is thus important to bring the sound from the VMs to Dom0,
 where it could be played on the physical audio card, that is assigned to Dom0.
-
 
 The most straightforward way for implementing audio support, seems to be to extend the role of the GUI
 agent running the AppVMs, so that it also reported where is the audio output buffer located, so that this
@@ -1320,7 +1316,7 @@ The exact details of implementation of Audio sharing between AppVMs and Dom0 are
 ther research.
 
 
-## 6. Secure networking
+## 6. Secure networking (OUTDATED)
 
 Network should always be considered hostile. This is especially true for laptop users who need to connect to
 the Internet via public WiFi hotspots, e.g. at the airport or in the hotel. Today networking software is very
