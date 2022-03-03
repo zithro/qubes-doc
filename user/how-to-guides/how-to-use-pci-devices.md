@@ -74,7 +74,7 @@ Once you've found the address of the device you want to attach, then attach it l
 qvm-pci attach targetVM sourceVM:[BDF] --persistent
 ```
 
-Since PCI devices have to be attached on bootup, attaching has to happen with the `--persistant` option.
+Since PCI devices have to be attached on bootup, attaching has to happen with the `--persistent` option.
 
 For example, if `00_1a.0` is the BDF of the device you want to attach to the "work" domain, you would do this:
 
