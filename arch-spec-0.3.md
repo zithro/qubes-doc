@@ -294,7 +294,7 @@ sharing mechanisms allow to reuse most of the filesystem between VMs, without de
 properties. Intel VT-d and TXT technology allows for creating safe driver domains, that minimize system at-
 tack surface.
 
-<PLACEHOLDER_IMAGE_1>[![Figure 1. Qubes architecture overview](/images/1.png)](/images/1.png)
+<PLACEHOLDER_IMAGE_1>[![_Figure 1. Qubes architecture overview_](/images/1.png)](/images/1.png)
 
 One can divide the VMs used by the system into two broad categories: the AppVMs, that are used to host
 various user applications, such as email clients, web browsers, etc, and the SystemVMs (or ServiceVMs)
@@ -317,7 +317,7 @@ be able to comfortably watch movies in applications running in AppVMs.
 Detailed discussion and description of of the secure GUI subsystem implementation is described later in this
 document.
 
-<PLACEHOLDER_IMAGE_2>[![Figure 2. Qubes common desktop concept.](/images/2.png)](/images/2.png)
+<PLACEHOLDER_IMAGE_2>[![_Figure 2. Qubes common desktop concept._](/images/2.png)](/images/2.png)
 
 **2.2. The AppVMs** (OUTDATED)
 
@@ -824,7 +824,7 @@ The diagram below represents the architecture of Filesystem sharing among AppVMs
 (^18^) Additionally, also Intel(R) TXT is needed to make the storage domain security non-critical. See the appropriate chapter later in this
 document for more details.
 
-<PLACEHOLDER_IMAGE_3>[![Figure 3. Secure file system sharing among many AppVMs.](/images/3.png)](/images/3.png)
+<PLACEHOLDER_IMAGE_3>[![_Figure 3. Secure file system sharing among many AppVMs._](/images/3.png)](/images/3.png)
 
 It might be tempting to allow the user to explicitly mark certain VM's COW files as persistent. Such an opera-
 tion would allow to preserve changes to the root filesystem to only certain AppVMs. E.g. the user might want
@@ -1206,7 +1206,7 @@ bes agent running (think of it as a Window Manager), that is responsible for the
 4. Relaying all the keyboard and mouse input, entered into the corresponding AppViewer window in Dom0,
     to the focused local application.
 
-<PLACEHOLDER_IMAGE_4>[![Figure 4. GUI subsystem design overview.](/images/4.png)](/images/4.png)
+<PLACEHOLDER_IMAGE_4>[![_Figure 4. GUI subsystem design overview._](/images/4.png)](/images/4.png)
 
 The communication protocol between the Qubes agent in AppVM and the AppViewer in Dom0 is a simple
 message-based protocol, implemented using the standard Xen Ring buffer protocol (the same that is used
@@ -1239,7 +1239,7 @@ XDamage notifications from the local X server, whenever any of the window on the
 dates (even if it is obstructed). The agent passes those notifications to the AppViewer, using the ring buffer
 protocol mentioned earlier.
 
-<PLACEHOLDER_IMAGE_5>[![Figure 4. Efficient implementation of AppViewer using composition buffers (requires XComposite extension to be enabled in the AppVM's X server).](/images/4.png)](/images/5.png)
+<PLACEHOLDER_IMAGE_5>[![_Figure 5. Efficient implementation of AppViewer using composition buffers (requires XComposite extension to be enabled in the AppVM's X server)._](/images/4.png)](/images/5.png)
 
 (^21^) [http://www.x.org/releases/X11R7.5/doc/compositeproto/compositeproto.txt](http://www.x.org/releases/X11R7.5/doc/compositeproto/compositeproto.txt)
 (^22^) Starting from Windows Vista.
@@ -1331,19 +1331,17 @@ facing networking code into a dedicated network domain. Another reason to move t
 Dom0 is to prevent potential attacks originating from other VMs and targeting potential bugs in Xen network
 backends, or Dom0 minimal TCP/IP stack.
 
-**6.1. The network domain**
+**6.1. The network domain** (OUTDATED)
 
 The network domain is granted direct access to the networking hardware, e.g. the WiFi or ethernet card. Be-
 sides, it is a regular unprivileged PV domain.
 
-_Figure 1. The network domain._
+<PLACEHOLDER_IMAGE_6>[![_Figure 6. The network domain._](/images/6.png)](/images/6.png)
 
 While it might be tempting to base the network domain on a regular AppVM root filesystem that all other VMs
 share, this might not be the optimal solution from the security point of view. Namely, there exist a slight
 chance of a bug in the regular Linux TCP/IP stack (in contrast to a more likely bug e.g. in the WiFi driver or
 WiFi stack). If such a bug existed and the attacker used it to exploit the stack in the network domain, then the
-
-
 attacker could automatically use this same exploit to further exploit any network-connected AppVM that used
 this very network domain.
 
@@ -1351,7 +1349,7 @@ Thus, it's better to use a different OS in the network domain, e.g. FreeBSD, ins
 tacker couldn't reuse the same hypothetical bug in the TCP/IP stack -- quite obviously two different OSes
 would have very different TCP/IP stack implementations.
 
-**6.2. No Inter-VM networking**
+**6.2. No Inter-VM networking** (OUTDATED)
 
 Each AppVM that uses networking uses a virtual network interface created by Xen network frontend, that
 appears as eth0 in the VM. The other side of the interface, in the network domain, is named vifX.Y, where
@@ -1373,10 +1371,10 @@ opment and testing purposes).
 
 The figure below illustrates the above.
 
-_Figure 2. Networking overview._
+<PLACEHOLDER_IMAGE_7>[![_Figure 7. Networking overview._](/images/7.png)](/images/7.png)
 
 
-**6.3. The Net domain user Interface**
+**6.3. The Net domain user Interface** (OUTDATED)
 
 The user should be allowed to somehow interact with the networking domain. The user input is necessary to
 e.g. choose the desired WiFI SSID to connect to, and to provide the optional WEP/WPA password. The more
@@ -1393,7 +1391,7 @@ nism for AppVMs, i.e. the GUI agent in the VM and the AppViewer in Dom0 displayi
 This places a requirement on the OS used for the network domain, that the GUI agent should support this
 OS. Currently this would mean that the OS runs an X server (with a dummy graphics driver, as usual).
 
-**6.4. The optional VPN domain**
+**6.4. The optional VPN domain** (OUTDATED)
 
 Normally it is assumed that all the network traffic encryption is performed by the AppVM that initiates and
 uses the connection. For instance if the user uses a Web browser in the AppVM to connect to the web server
@@ -1429,11 +1427,9 @@ necessary to assure cooperation of the applications (e.g. via specifying tor as 
 
 The exemplary setup with VPN domain is illustrated on a figure below.
 
+<PLACEHOLDER_IMAGE_8>[![_Figure 8. Exemplary VPN usage._](/images/8.png)](/images/8.png)
 
-_Figure 3. Exemplary VPN usage._
-
-
-## 7. Secure storage
+## 7. Secure storage (OUTDATED)
 
 Secure storage subsystem is essential for any system. There are several things that all together make the
 storage secure in the Qubes architecture:
@@ -1445,7 +1441,7 @@ storage secure in the Qubes architecture:
 4. Security non-critical role: a potential compromise of the storage subsystem doesn't result in other system
     components, like other VMs, compromise. Storage subsystem is not part of the TCB in Qubes OS.
 
-**7.1. The Storage Domain**
+**7.1. The Storage Domain** (OUTDATED)
 
 Qubes architecture implements secure storage by having a separate, unprivileged, domain which has ac-
 cess to the disk and other mass storage devices, and that also hosts the Xen block backend that are used to
@@ -1454,12 +1450,10 @@ storage domain cannot compromise the filesystems used by other domains in any me
 makes the storage domain security non-critical. This means that if the attacker managed to compromise the
 storage domain, this would not automatically let the attacker to compromise any other VM.
 
-Figure 1. The storage domain.
+<PLACEHOLDER_IMAGE_9>[![_Figure 9. The storage domain._](/images/9.png)](/images/9.png)
 
 Unlike in case of the Network domain, the Storage domain does not contain any world-facing code, so the
 need to create an isolated domain for "disk drivers" might seem a bit of an overkill at first look. However, we
-
-
 should remember that there is lots of code running to provide all the subsystem services: block device back-
 ends, file exchange daemon (described earlier), USB PV backends, etc. By isolating all this code in a sepa-
 rate, unprivileged domain, we don't need to worry about potential bugs that might be present in this code.
@@ -1505,9 +1499,9 @@ all the signed and encrypted block devices, again making the system unusable.
 But besides DoS attacks the attacker cannot achieve anything else, e.g. cannot read or tamper (in a mean-
 ingful way) with the VM private data or with the root filesystem used by each VM (or by Dom0). In most
 cases DoS attacks are not such a big problem and are relatively easy manageable. Particularly the well
-known solution against this form of attacks is to make regular backups of data.
+known solution against this form of attack is to make regular backups of data.
 
-**7.2. System boot process**
+**7.2. System boot process** (OUTDATED)
 
 Qubes boot process comprises several steps.
 
@@ -1519,21 +1513,17 @@ Qubes boot process comprises several steps.
 2. Once the TXT boot is finalized, the next step is to load and start the hypervisor and the Dom0 kernel,
     and also to run the Dom0's initramfs script. One should notice that both the hypervisor and Dom0 kernel
     will be started regardless of whether their hashes are correct or not (e.g. because they were tampered
-
-
-```
-by the attacker somehow)^23. This is however not a problem, because in order to proceed to the next
-stages of the boot process the Dom0 init scripts would need to unseal a secret from the TPM needed to
-decrypt the rest of the file systems. If the hypervisor, or Dom0 image, or initramfs script was tampered,
-this unsealing would not succeed and consequently the system would not be able to proceed with the
-boot.
-```
+    by the attacker somehow)^23^. This is however not a problem, because in order to proceed to the next
+    stages of the boot process the Dom0 init scripts would need to unseal a secret from the TPM needed to
+    decrypt the rest of the file systems. If the hypervisor, or Dom0 image, or initramfs script was tampered,
+    this unsealing would not succeed and consequently the system would not be able to proceed with the
+    boot.
 3. Next, the Dom0 initramfs script asks user for the secret -- this could be a passphrase entered via regular
     keyboard, as well as a secret stored on a smart card. This step is necessary to allow only the authorized
     user to boot the system (because booting the system involves decrypting of many file systems). The ad-
     vantage of using a secret stored on a smart card (token) is the resistance to keystroke sniffers. This is
     described in more detail in the last chapter about attack surface analysis.
-    It is very important that the system somehow prove to the user that it is non-tampered so that the user
+    It is very important that the system somehow proves to the user that it is non-tampered so that the user
     enters the passphrase (or inserts the smart card and enters the PIN) only if he or she is sure that the
     code that asks for the passphrase is not tampered with. This attack is known as Evil Maid attack. We
     discuss the possible solutions in Qubes OS against this attack in the next chapter.
@@ -1541,8 +1531,8 @@ boot.
     script have been loaded, and also if the correct user passphrase has been entered (alternatively correct
     secret read from the smart card), only then the system would be able to decrypt the keys.gpg file (lo-
     cated in the boot partition) that contains the keys needed for the next boot stages.
-4. Having the keys.gpg file decrypted into memory^24 , makes it now possible, for the Dom0's initramfs
-    script, to create the storage domain.
+4. Having the keys.gpg file decrypted into memory^24^ makes it now possible for the Dom0's initramfs
+    script to create the storage domain.
 5. The storage domain root file system is created out of a separate physical partition (/dev/sda2 on the
     figure below), which is encrypted with the key stored in the previously mentioned keys.gpg file.
     The encryption of the storage domain partition is not absolutely necessary, because there are no security
@@ -1552,7 +1542,7 @@ boot.
     connect to another laptop) could manipulate the software stored in the storage domain. While this would
     not give any immediate benefits to the attacker, as the storage domain is designed to be security non-
     critical, and also doesn't have access e.g. to the network, still the attacker could use the, now compro-
-    mised, storage domain to try to attack other VMs in the system. This could e.g. be attempt by modifying
+    mised, storage domain to try to attack other VMs in the system. This could e.g. be attempted by modifying
     the backends and daemons running in the storage domain, so that they try to exploit potential bugs in
     the other VMs frontends.
     Of course the same theoretical line of attack could be used when the attacker compromises the storage
@@ -1569,14 +1559,14 @@ boot.
     Dom0. The Dom0's initramfs script can now mount the root filesystem for Dom0 and complete the Dom0
     boot process, including the start of the X server and the Window Manager.
 
-(^23) Intel Trusted Execution Technology contains a mechanism called Launch Policy, that can be used to prevent a hypervisor from load-
+(^23^) Intel Trusted Execution Technology contains a mechanism called Launch Policy, that can be used to prevent a hypervisor from load-
 ing, if its hash is incorrect. This mechanism, however, while looking secure at first sight, doesn't really provide any guarantee that the
 attacker's code will not run, because the attacker can simply choose to never execute the SENTER instruction. TXT-compatible proces-
 sors allow to lock down the configuration, so that the CPU would refuse to execute any VMX instructions without prior executing
 SENTER instruction (entering SMX mode). However, there is nothing that would require the attacker to use VMX instructions in his or
 her modified hypervisor. Consequently, we don't make use of the TXT Launch Policy, as we don't believe it offers any security improve-
 ment over the "bare" TXT.
-(^24) The keys.gpg file would likely have to be part of the initramfs file, to make it possible for the init script to read it. This is a minor techni-
+(^24^) The keys.gpg file would likely have to be part of the initramfs file, to make it possible for the init script to read it. This is a minor techni-
 cality though.
 
 
@@ -1584,13 +1574,13 @@ cality though.
 
 This concludes the system secure boot process.
 
-_Figure 2. The Qubes OS secure boot process._
+<PLACEHOLDER_IMAGE_10>[![_Figure 10. The Qubes OS secure boot process._](/images/10.png)](/images/10.png)
 
-**7.3. Evil Maid Attack prevention**
+**7.3. Evil Maid Attack prevention** (OUTDATED)
 
 For laptop users, especially those who travel frequently, it is very important for the system to offer effective
 prevention against low-cost physical attacks. One such class of attacks, very simple and cheap to conduct, is
-called Evil Maid Attacks^25. The attack works by subverting the boot code (e.g. the initramfs script) that asks
+called Evil Maid Attacks^25^. The attack works by subverting the boot code (e.g. the initramfs script) that asks
 for the user passphrase or reads the secret from the smart card/token. Even though the TPM-based verified
 boot process would not allow to later boot the system in case it was "evilmaided", still the attacker's code can
 obtain the user's passhprase (or smartcard secret) and store it somewhere on disk for later retrieval (e.g. the
@@ -1602,13 +1592,13 @@ the system should somehow authorize to the user, before the user enters the pass
 tinue the system boot. This is, however, not such a straight forward task, and several approaches are possi-
 ble, each providing different tradeoff between user's conveniance and security.
 
-(^25) The term _Evil Maid Attack_ has been proposed by one of the authors of this document in a talk about Trusted Computing
-(http://invisiblethingslab.com/resources/misc09/trusted_computing_thoughts.pdf), and later has started been used by other researchers
+(^25^) The term _Evil Maid Attack_ has been proposed by one of the authors of this document in a talk about Trusted Computing
+[http://invisiblethingslab.com/resources/misc09/trusted_computing_thoughts.pdf](http://invisiblethingslab.com/resources/misc09/trusted_computing_thoughts.pdf), and later has started been used by other researchers
 and vendors to describe this class of attacks. More information about practical Evil Maid Attacks the reader can find in another authors'
 article: [http://theinvisiblethings.blogspot.com/2009/10/evil-maid-goes-after-truecrypt.html](http://theinvisiblethings.blogspot.com/2009/10/evil-maid-goes-after-truecrypt.html)
 
 
-#### The "favorite picture" approach
+#### The "favorite picture" approach (OUTDATED)
 
 The most obvious approach is for the system to display a secret passphrase on the screen, before asking
 the user for his or her passphrase. This authentication passphrase would, of course, be normally encrypted,
@@ -1637,7 +1627,7 @@ laptop to capture the "secret" authentication picture, but this makes the attack
 might perhaps be possible on certain system to disable the VGA/DVI port during the boot, so that it could not
 be used to copy the authentication picture.
 
-#### USB token
+#### USB token (OUTDATED)
 
 Much more secure solution could be achieved using a USB token or a smart card. Such devices typically
 expect the authentication PIN to be sent to them first, before allowing the software to e.g. read a secret
@@ -1648,7 +1638,7 @@ has booted, with the passphrase entered by the user (key_user), creating togethe
 card authentication:
 
 ```
-PIN = H(key_tpm ? key_user)
+PIN = H(key_tpm + key_user)
 ```
 Now, only if both the software was non-tampered and the user knew the passphrase, only then the secret
 from the smartcard would be returned to the software. This way we achieve both the system and user
@@ -1665,17 +1655,16 @@ users.
 Additionally, by using a token for authentication, the user can protect against external key stroke loggers, like
 e.g. hidden cameras.
 
-#### OTP passwords
+#### OTP passwords (OUTDATED)
 
 Yet another solution against Evil Maid attacks is to use one-time-passwords (OTP) for authenticating the
-software that asks for the passphrase^26.
+software that asks for the passphrase^26^.
 
 The idea is the following. During installation of the system, a list of one time passwords is generated (and
 saved in a otp.txt file). This file is then encrypted with a secret (creating otp.gpg file), and the secret is
 
-(^26) The reader should note that the OTP passwords can also be used to authenticate the user to the system. Here we focus on the in-
+(^26^) The reader should note that the OTP passwords can also be used to authenticate the user to the system. Here we focus on the in-
 verse scenario.
-
 
 sealed into TPM (so that only if the correct software was booted it can retrieve this secret from the TPM).
 Also a copy of the list in plaintext (otp.txt) is given to the user.
@@ -1686,25 +1675,25 @@ user can verify this using the list.
 The obvious practical problem is how the user should maintain the otp.txt list. One possibility is to use a
 scratch card, but this has a very serious limitation of allowing just a few tens of OTP passwords per card.
 
-Much better solution seems to be to use OATH-compatible^27 token. The protocol might look like this:
+Much better solution seems to be to use OATH-compatible^27^ token. The protocol might look like this:
 
 1. User boots the machine
 2. The system asks for the next OTP password
 3. User enters the password that the token displays (OTP1)
-4. The system verifies if OTP1 is within the allowed window^28 , and if it is, the system presents the next OTP
+4. The system verifies if OTP1 is within the allowed window^28^, and if it is, the system presents the next OTP
     password, OTP2, that directly follows the OTP1
 5. The user generates a new password, e.g. by pressing a button on the token. If this new password is
     equal to OTP2 that just has been presented by the system, the user assumes the system software is not
     tampered and can proceed with providing the secret passphrase needed to boot the system.
 
-**7.4. Discussion: Intel TXT advantages over Static RTM**
+**7.4. Discussion: Intel TXT advantages over Static RTM** (OUTDATED)
 
-In Qubes architecture we decided to relay on the Dynamic Root of Trust for Measurement (DRTM), as im-
+In Qubes architecture we decided to rely on the Dynamic Root of Trust for Measurement (DRTM), as im-
 plemented in Intel Trusted Execution Technology, rather than on the Static Root of Trust for Measurement
 (SRTM). There are two primary reasons why we believe that TXT is superior over Static RTM approach: the
 DMA protection, and the lack of requirement for maintaining the long chain of trust since the system boot.
 
-#### DMA protection
+#### DMA protection (OUTDATED)
 
 First, Intel TXT provides automatic DMA protection for the measured code. This is very important, especially
 in Qubes architecture, where we allow unprivileged domains (the network and storage domains) to directly
@@ -1722,7 +1711,7 @@ timing in order to succeed, nevertheless this seems possible.
 Intel TXT prevents such attacks, because the SENTER instruction sets DMA protection for all the code that is
 about to be measured and later executed.
 
-#### The shorter chain of trust
+#### The shorter chain of trust (OUTDATED)
 
 Another advantage of using dynamic root of trust for measurement over static root of trust, is that it is not
 required to maintain a long chain of trust that would cover all possible code ever executed since the start of
@@ -1734,8 +1723,8 @@ Intel TXT requires that we either trust the platform SMM handler (as it can surv
 ess), or alternatively, that we provide a special hypervisor needed to contain the potentially buggy SMM, the
 so called SMM Transfer Monitor (STM). So, it's either the SMM handler, or the STM hypervisor, that should
 
-(^27) The OATH specification can be found at ftp://ftp.rfc-editor.org/in-notes/rfc4226.txt
-(^28) It's usually assumed that the token OTP counter might get out of sync with the system counter (e.g. because the button on the token
+(^27^) The OATH specification can be found at ftp://ftp.rfc-editor.org/in-notes/rfc4226.txt
+(^28^) It's usually assumed that the token OTP counter might get out of sync with the system counter (e.g. because the button on the token
 used for generating new OTP password might be incidentally pressed by the user). Thus a certain window is assumed, that allows the
 user to enter any token whose index belong to the following set: N+1, ..., N+n, where _N_ is the last used token index, and _n_ is the maxi-
 mum window size.
@@ -1744,7 +1733,7 @@ mum window size.
 be included in the chain of trust for TXT. Still, this sounds like less code to trust than in the case of the classic
 SRTM.
 
-**7.5. USB and DVD support**
+**7.5. USB and DVD support** (OUTDATED)
 
 The storage domain, besides the obvious block backends and direct access to the disk controller, also has
 access to other storage device controllers, in particular to the USB controller (e.g. for USB flash storage) and
@@ -1788,12 +1777,12 @@ It is thus possible to assign selected USB controllers (for the select physical 
 e.g. the AppVM that uses that PGP smartcard, using direct device assignment via VT-d, in the same way as
 the USB controllers are normally being assigned to the storage domain.
 
-**7.6. Making backups**
+**7.6. Making backups** (OUTDATED)
 
-#### Making full backups using storage domain
+#### Making full backups using storage domain (OUTDATED)
 
 The storage domain can be used to perform full backup of all the user data. For this, it is just enough to copy
-all the (encrypted) vm*-priv.img files onto a backup medium, e.g. DVD disc^29. Additionally the user should
+all the (encrypted) vm*-priv.img files onto a backup medium, e.g. DVD disc^29^. Additionally the user should
 also keep a backup copy of the keys used to encrypt each of the AppVM's block devices. This cannot be
 simply a copy of the keys.gpg file (from the Dom0's /boot), because this file is encrypted with a key that is
 a product of the TPM secret and the user passphrase. Obviously, the user is only expected to remember the
@@ -1801,17 +1790,16 @@ passphrase and not the TPM's secret, which e.g. can be lost if the laptop gets s
 desirable for the Dom0 to maintain an always synchronized copy of the keys.gpg file, perhaps named
 keys_backup.gpg, encrypted only with the user passphrase, but preferably with a different passphrase
 
-(^29) This should be done after powering down all the AppVMs, or at least after syncing all their filesystems.
+(^29^) This should be done after powering down all the AppVMs, or at least after syncing all their filesystems.
 
-
-than the one used for booting the machine^30. This (encrypted) file can then be automatically attached to each
+than the one used for booting the machine^30^. This (encrypted) file can then be automatically attached to each
 backup copy made by the storage domain.
 
-#### Making incremental backups (using Dom0)
+#### Making incremental backups (using Dom0) (OUTDATED)
 
-The storage domain, however is unable to make an incremental backups of the user data, because the stor-
+The storage domain, however is unable to make incremental backups of the user data, because the stor-
 age domain cannot decrypt the per-VM block devices and cannot see the actual files, that are needed for
-effective incremental backups, preferably with a history of each file modifications (old revisions of replace
+effective incremental backups, preferably with a history of each file modifications (old revisions of replaced
 files are kept in appropriately named directories, e.g. backup-YYYYMMDD).
 
 The only entity that can make incremental backups of all the user data is Dom0, because only Dom0 has
@@ -1823,11 +1811,11 @@ onto the storage medium, using a popular tool for making incremental backups, li
 
 The whole backup filesystem should be encrypted with user-provided passphrase.
 
-(^30) We would like to avoid the attack when the user's boot passphrase gets somehow recorded, e.g. using the keyboard sniffer, and then
+(^30^) We would like to avoid the attack when the user's boot passphrase gets somehow recorded, e.g. using the keyboard sniffer, and then
 the attacker uses it to decrypt the keys_backup.gpg file, bypassing the trusted boot protection.
 
 
-## 8. Analysis of potential attack vectors
+## 8. Analysis of potential attack vectors (OUTDATED)
 
 There is no such thing as 100% secure OS, at least on x86 COTS hardware. The software and hardware is
 simply too complex to analyze for all potential errors in case of x86 platforms. Qubes architecture is all about
@@ -1842,11 +1830,11 @@ too, just much longer -- tens or perhaps hundreds of pages long.
 Below we assume the attacker compromised one of the VMs, and discuss potential attack vectors the at-
 tacker might use in order to compromise other VMs.
 
-**8.1. 1-stage vs. 2-stage attacks**
+**8.1. 1-stage vs. 2-stage attacks** (OUTDATED)
 
 We can divide potential attacks on Qubes OS into two groups:
 
-1. one-stage attacks, that require the attacker find only one bug and exploit it in order to compromise the
+1. one-stage attacks, that require the attacker to find only one bug and exploit it in order to compromise the
     system (e.g. steal data from other VMs or compromise them),
 2. two-(or more)-stage attacks, where the attacker would have to chain two different exploits targeting two
     different bugs, in two different system components. E.g. one exploit to "get to" the storage domain, and
@@ -1856,27 +1844,27 @@ It should intuitively be obvious that the likelihood of a 2-stage attack should 
 probability of a successful 1-stage attack, nevertheless we include them in the attack surface analysis as
 well.
 
-**8.2. Potential attacks vectors from any VM (1-stage attacks)**
+**8.2. Potential attacks vectors from any VM (1-stage attacks)** (OUTDATED)
 
-#### Potential bugs in the hypervisor
+#### Potential bugs in the hypervisor (OUTDATED)
 
-The hypervisor is the most privilege element of the system. Any attack on the hypervisor (e.g. exploiting a
+The hypervisor is the most privileged element of the system. Any attack on the hypervisor (e.g. exploiting a
 buffer overflow in a hypercall) allows to fully compromise the system. As part of the Qubes project we try to
 minimize the possibility of hypervisor exploitation as it has been described in one of the chapters earlier.
 
 So far there has been only one overflow discovered in the Xen hypervisor, and it wasn't in the core Xen
 code, but rather in the optional code in the special extension to the Xen hypervisor called FLASK security
-module^31. Incidentally this bug has been discovered and described by one of the authors of this document^32.
+module^31^. Incidentally this bug has been discovered and described by one of the authors of this document^32^.
 
 We expect the hypervisor code footprint to be between 50,000 - 200,000 LOC (the smaller number is what
 we expect to have after we start sliming down the current Xen hypervisor, which is closer in size to the latter
 number).
 
-#### Potential bugs in the Xen Store Daemon (in Dom0)
+#### Potential bugs in the Xen Store Daemon (in Dom0) (OUTDATED)
 
 Xen Store Daemon runs in Dom0 and its potential compromise can be fatal, as the attacker can later gain full
 control over Dom0. It should be determined if Xen Store Daemon can be run under restricted user account,
-rather than using the root account, which might provide a minor level of additional security^33.
+rather than using the root account, which might provide a minor level of additional security^33^.
 
 There is also a theoretical possibility of logical errors in the Xen Store Daemon implementation. E.g. an un-
 privileged domain might exploit a hypothetical bug in the daemon to read certain key values that are not to
@@ -1884,9 +1872,9 @@ be read by this VM, which might contain e.g. the keys used to encrypt the block 
 exchange, in which case the attacker, that also controls the storage domain, could steal the contents of the
 files being exchanged between the VMs.
 
-(^31) This is a good example to support the thesis that the less code in the hypervisor the better.
-(^32) [http://invisiblethingslab.com/resources/bh08/part2-full.pdf](http://invisiblethingslab.com/resources/bh08/part2-full.pdf)
-(^33) Obviously we don't assume that OS-level isolation is really that effective, hence the use of the word "minor". It's expected that a
+(^31^) This is a good example to support the thesis that the less code in the hypervisor the better.
+(^32^) [http://invisiblethingslab.com/resources/bh08/part2-full.pdf](http://invisiblethingslab.com/resources/bh08/part2-full.pdf)
+(^33^) Obviously we don't assume that OS-level isolation is really that effective, hence the use of the word "minor". It's expected that a
 skilled attacker can find and exploit a kernel overflow to escalate from user to root in Dom0.
 
 
@@ -1897,7 +1885,7 @@ such attack vectors.
 Nevertheless, the Xen Store Daemon, being a very prominent target, should be thoroughly evaluated before
 commercial use of the system.
 
-#### Potential bugs in the GUI daemon (in Dom0)
+#### Potential bugs in the GUI daemon (in Dom0) (OUTDATED)
 
 The GUI daemon also runs in Dom0, and its successful exploitation is always fatal (see discussion in the
 chapter on GUI).
@@ -1906,13 +1894,13 @@ The GUI daemon uses the same underlying communication mechanism as the Xen Store
 similarly simple protocol. It's thus believed that the likelihood of a bug in the GUI daemon implementation
 should be very small.
 
-#### Potential CPU bugs
+#### Potential CPU bugs (OUTDATED)
 
 Modern processors are one of the most complex creations made by humans. It is hard not to think that there
 might be a bug in a CPU that could e.g. allow for unauthorized ring3 to ring0 privilege escalation. Interest-
 ingly, no such bugs have ever been publicly disclosed. The closest of what we can think of here would be the
 SMM caching attack, incidentally discovered by the authors of this document (and also independently by
-Loic Duflot) a few months ago^34.
+Loic Duflot) a few months ago^34^.
 
 One should, however, note that a CPU bug would not only be fatal to Qubes OS -- it would be fatal to any
 PC-based OS.
@@ -1926,9 +1914,9 @@ All the theoretical attacks considered in this paragraph are 2-stage attacks, wh
 tacks require two different exploitable bugs, in two different system components, at the same time, in order to
 succeed.
 
-#### Potential VT-d bypass
+#### Potential VT-d bypass (OUTDATED)
 
-If the attacker was able to initiate an arbitrary DMA transaction by programing a device assigned to one of
+If the attacker was able to initiate an arbitrary DMA transaction by programming a device assigned to one of
 the driver domains (e.g. the network card), the attacker would be able to compromise the system. Qubes
 architecture relies on Intel VT-d to prevent devices assigned to driver domains from performing DMA to
 memory not belonging to their domain. An attacker that could bypass Intel VT-d technology, e.g. by compro-
@@ -1939,7 +1927,7 @@ non trivial to come up with. Also one should note, that in order to use it again
 would first need to compromise one of the driver domains, by exploiting a bug in the software running there
 (e.g. a bug in the network driver, or network backend, or disk backend).
 
-#### Driver domain to MBR attacks
+#### Driver domain to MBR attacks (OUTDATED)
 
 An attacker that controls one of the driver domains can theoretically find a way to re-flash the firmware in the
 device being assigned to the domain, e.g. the network card. The attacker can then attempt to program the
@@ -1951,14 +1939,14 @@ Nevertheless, the attacker can now attempt to perform most of the attacks that a
 low to storage domain only (except for the attacks on VM storage frontends, see below, that is possible only
 from the storage domain).
 
-#### Potential delayed DMA attack on Dom0 (attack mostly from storage domain)
+#### Potential delayed DMA attack on Dom0 (attack mostly from storage domain) (OUTDATED)
 
 If the attacker controls the storage domain, he or she can infect the MBR or boot loader.
 
-(^34) [http://invisiblethingslab.com/resources/misc09/smm_cache_fun.pdf](http://invisiblethingslab.com/resources/misc09/smm_cache_fun.pdf)
+(^34^) [http://invisiblethingslab.com/resources/misc09/smm_cache_fun.pdf](http://invisiblethingslab.com/resources/misc09/smm_cache_fun.pdf)
 
 
-The infected boot loader can, in turn access the graphics card or the audio card device (because early in the
+The infected boot loader can, in turn, access the graphics card or the audio card device (because early in the
 boot, before executing SENTER, there are no VT-d protections in place), and program it in such a way (per-
 haps by re-flashing its firmware) that it will wait until Dom0 start and then performs a malicious DMA attack,
 that e.g. installs a backdoor in Dom0.
@@ -1970,7 +1958,7 @@ In order to prevent such hypothetical attacks, the hypervisor should allow domai
 call) to set additional per-VM VT-d protections. Obviously the hypervisor should make sure that the domain
 can only set more restrictive VT-d protections, rather than the other way round.
 
-#### Potential TXT bypass (attack mostly from storage domain)
+#### Potential TXT bypass (attack mostly from storage domain) (OUTDATED)
 
 Intel Trusted Execution Technology (TXT) allows to have unprivileged security non-critical storage domain. If
 the attacker was able to bypass Intel TXT (using a software only attack), the attacker, if already compro-
@@ -1978,9 +1966,9 @@ mised the storage domain, could compromise the whole system e.g. by modifying th
 image on disk and rebooting the system.
 
 So far two attacks on Intel TXT have been publicly disclosed. Incidentally both of the attacks have been dis-
-covered by the authors of this document^35.
+covered by the authors of this document^35^.
 
-#### Untrusted input to Dom0 from BIOS, e.g. malicious ACPI (attack mostly from storage domain) 
+#### Untrusted input to Dom0 from BIOS, e.g. malicious ACPI (attack mostly from storage domain) (OUTDATED)
 
 Xen hypervisor and Dom0 kernel process several BIOS-provided inputs during boot. This includes e.g. the
 BIOS e820 memory map, as well as the BIOS-provided ACPI tables. All the BIOS-provided input should be
@@ -1998,53 +1986,53 @@ All the Xen and Dom0 kernel code that process BIOS-provided input should be thor
 All those attacks assume that the attacker is controlling the execution early in the boot process. This can be
 a result of the attacker gaining control over the storage domain earlier.
 
-#### Potential encryption scheme bypass (attack from storage domain)
+#### Potential encryption scheme bypass (attack from storage domain) (OUTDATED)
 
 For the storage domain to be security non-critical, it is important to trust the crypto scheme used for VM pri-
 vate block device encryption and the shared root filesystem signing to be correctly implemented. Otherwise,
 the attacker who gained control over the storage domain, could either steal the VM private data or inject ma-
 licious code for other VMs to execute.
 
-#### Potential attacks on storage frontends (attack from the storage domain)
+#### Potential attacks on storage frontends (attack from the storage domain) (OUTDATED)
 
 An attacker that controls the storage domain might attempt to exploit hypothetical bugs in the other VM's
 block frontends that communicate with the block backend hosted in the storage domain.
 
-The block fontend drivers are very simple and thus it is expected that the likelihood of a potential bug there is
+The block frontend drivers are very simple and thus it is expected that the likelihood of a potential bug there is
 rather small.
 
-#### Potential attacks on VM networking code (attack from the network domain)
+#### Potential attacks on VM networking code (attack from the network domain) (OUTDATED)
 
-An attacker that controls the network domain might attempt to exploit hypothetical bugs in the other VM's
+An attacker who controls the network domain might attempt to exploit hypothetical bugs in the other VM's
 network frontends, or their regular TCP/IP stack. The Xen network frontends are very simple and thus the
 likelihood of a bug there is expected to be rather small. The regular TCP/IP stack (in contrast to e.g. WiFi
 stack or WiFi driver) is usually a very well tested code, and thus it should be hard to find and successfully
 exploit a bug in this stack (although more likely than a bug in the frontend).
 
-(^35) [http://invisiblethingslab.com/resources/bh09dc/Attacking%20Intel%20TXT%20-%20paper.pdf](http://invisiblethingslab.com/resources/bh09dc/Attacking%20Intel%20TXT%20-%20paper.pdf) and
-[http://invisiblethingslab.com/resources/misc09/Another%20TXT%20Attack.pdf.](http://invisiblethingslab.com/resources/misc09/Another%20TXT%20Attack.pdf.)
+(^35^) [http://invisiblethingslab.com/resources/bh09dc/Attacking%20Intel%20TXT%20-%20paper.pdf](http://invisiblethingslab.com/resources/bh09dc/Attacking%20Intel%20TXT%20-%20paper.pdf) and
+[http://invisiblethingslab.com/resources/misc09/Another%20TXT%20Attack.pdf](http://invisiblethingslab.com/resources/misc09/Another%20TXT%20Attack.pdf)
 
 
-**8.4. Resistance to attacks from the (local) network**
+**8.4. Resistance to attacks from the (local) network** (OUTDATED)
 
 Because all the world-facing networking code executes in the unprivileged network domain, there is no direct
 attack surface from the local network on the system.
 
-There is, however, a possibility, that the attacker, who already compromised the network domain, e.g. by ex-
+There is, however, a possibility that the attacker, who already compromised the network domain, e.g. by ex-
 ploiting a bug in the WiFi driver, can now try to exploit (another) bug in the networking stack of one of the
-AppVMs, as explained in the previous paragraph. That would however requite a 2-stage attack.
+AppVMs, as explained in the previous paragraph. That would however require a 2-stage attack.
 
-**8.5. Resistance to physical attacks**
+**8.5. Resistance to physical attacks** (OUTDATED)
 
 Below we analyze the low-cost physical attacks that could be performed in a matter of minutes against a lap-
 top left e.g. in a conference or hotel room, and how Qubes OS can resist them.
 
-#### Resistance to Evil Maid attacks (trusted boot bypass)
+#### Resistance to Evil Maid attacks (trusted boot bypass) (OUTDATED)
 
 As it has been described in the previous chapter on storage domain, Qubes boot process is designed to
 withstand even sophisticated Evil Maid attacks.
 
-#### Resistance to keystroke sniffing attacks (e.g. hidden camera)
+#### Resistance to keystroke sniffing attacks (e.g. hidden camera) (OUTDATED)
 
 Qubes OS can also resist simple key sniffing attacks that are targeted toward capturing the passphrase used
 to boot the system. This can be achieved by the already mentioned trusted boot process that uses smartcard
@@ -2082,7 +2070,7 @@ would have access to the TPM), the attacker would be unable to boot the system u
 key, even if restored all the disk contents to the previous state, recorded before the user entered the key that
 was sniffed.
 
-#### Resistance to DMA attacks (e.g. malicious PCMCIA)
+#### Resistance to DMA attacks (e.g. malicious PCMCIA) (OUTDATED)
 
 Due to the extensive use of VT-d, Qubes OS should be resistant to many runtime DMA attacks, e.g. when
 the attacker inserts a specially crafted PC Card (also known as PCMCIA) that is supposed to use DMA in
