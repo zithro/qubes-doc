@@ -33,6 +33,25 @@ To permanently install new software in a template:
    - Fedora: `sudo dnf install <PACKAGE_NAME>`
    - Debian: `sudo apt install <PACKAGE_NAME>`
 
+   **Note:** Qubes OS is effectively a "meta" operating system (OS) that can
+   run almost any arbitrary OS inside of itself. For example, the way software
+   is normally installed in a Linux distribution ("distro") is quite different
+   from the way software is normally installed in Windows. This isn't up to
+   Qubes. Qubes is just the framework in which you're running these other OSes.
+   Therefore, if you want to install software in a Linux template, for example,
+   you should do so in whatever way is normal for that Linux distro. Most Linux
+   software is distributed via
+   [packages](https://en.wikipedia.org/wiki/Package_format), which are stored
+   in [software
+   repositories](https://en.wikipedia.org/wiki/Software_repository) ("repos").
+   [Package managers](https://en.wikipedia.org/wiki/Package_manager) handle
+   downloading, installing, updating, and removing packages. (Again, none of
+   this is Qubes-specific.) If you're not familiar with how software is
+   normally installed in Linux distros via package managers or the software you
+   want doesn't seem to be available in your distro's repos (or you're in
+   another situation not covered on this page), please read this [community
+   guide to installing software in Qubes](https://forum.qubes-os.org/t/9991/).
+
 4. **Shut down the template. (Do not skip this step.)**
 
 5. **Restart all qubes based on the template. (Do not skip this step.)**
@@ -65,10 +84,13 @@ Please see [How to Update](/doc/how-to-update/).
 
 ## Why don't templates have network access?
 
-In order to protect you from performing risky activites in templates, they do
+In order to protect you from performing risky activities in templates, they do
 not have normal network access. Instead, templates use an [updates
 proxy](#updates-proxy) that allows you to install and update software without
-giving the template direct network access.
+giving the template direct network access. **The updates proxy is already set up
+to work automatically out-of-the-box and requires no special action from you.**
+Most users should simply follow the normal instructions for
+[installing](#instructions) and [updating](/doc/how-to-update/) software.
 
 ## Advanced
 
