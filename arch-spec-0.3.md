@@ -452,12 +452,12 @@ The only element (that is accessible to VMs) that must be left in Dom0 is the Xe
 sponsible for managing a directory of system-wide parameters (e.g. where is each of the backend driver lo-
 cated). That represents a very minimal amount of code that needs to be reviewed.
 
-(^1^) [http://xen.org](http://xen.org)
-(^2^) [http://linux-kvm.org](http://linux-kvm.org)
+(^1^) [http://xen.org](http://xen.org)  
+(^2^) [http://linux-kvm.org](http://linux-kvm.org)  
 (^3^) Of course there are hypercalls that result in triggering events in Dom0, so code execution in Dom0, but that is clear from their defini-
-tion, e.g. hypercalls used to deliver events to guests.
+tion, e.g. hypercalls used to deliver events to guests.  
 (^4^) In general this is a non-trivial task. E.g. special care should be paid when creating a disk driver domain. See the discussion later in this
-document on how to create a truly non-security-critical disk driver domain.
+document on how to create a truly non-security-critical disk driver domain.  
 (^5^) If one doesn't need to run HVM guests, e.g. Windows, and runs only PV guests in Xen, then it's possible to get rid of the I/O Emulator
 entirely. Otherwise, one can use the "stub-domain" mechanism introduced in Xen 3.3, that allows to host the I/O emulator in a special
 VM dedicated to each HVM machine.
@@ -585,9 +585,9 @@ cause NX protection alone can easily be circumvented using the so called return-
 nique, where the attacker jumps into the code snippets that are already present (as they are parts of the le-
 gal code) in the address space of the target being exploited.
 
-(^7^) [http://ertos.nicta.com.au/publications/papers/Klein_EHACDEEKNSTW_09.pdf](http://ertos.nicta.com.au/publications/papers/Klein_EHACDEEKNSTW_09.pdf)
+(^7^) [http://ertos.nicta.com.au/publications/papers/Klein_EHACDEEKNSTW_09.pdf](http://ertos.nicta.com.au/publications/papers/Klein_EHACDEEKNSTW_09.pdf)  
 (^8^) A buggy SMM handler might e.g. overwrite the microkernel memory, perhaps as a result of some malicious triggering actions by some
-usermode process.
+usermode process.  
 (^9^) Although it's currently not clear if e.g. removing the HVM code from Xen really reduces the effective footprint, understood as the code
 reachable from the guest, if the user only uses the PV guests. To Be Determined.
 
@@ -709,9 +709,9 @@ Particularly dangerous is the ACPI's interpreted language, ACPI Machine Language
 describe how certain power-management operations should be accomplished by the underlying OS.
 
 (^10^) Dom0 cannot modify the hypervisor memory, while the hypervisor can modify Dom0 memory. Still, Dom0 can access and modify all
-the memory of all the other VMs in the system.
+the memory of all the other VMs in the system.  
 (^11^) In the chapter dedicated to GUI subsystem, there is a detailed discussion about potential benefits of having the GUI subsystem
-hosted in a separate domain, and why those benefits are, in the authors opinion, not worth the effort.
+hosted in a separate domain, and why those benefits are, in the authors opinion, not worth the effort.  
 (^12^) E.g. in case of most mainstream OSes, which do not use VT-d, it is possible to prepare a specially programmed PCMCIA card that,
 when inserted into the laptop, can automatically compromise the machine, e.g. by installing a rootkit or backdoor. In that case any laptop
 left unattended for just a few minutes is subject to such an attack.
@@ -757,11 +757,11 @@ non-critical, so it's important to consider workarounds to prevent this attack.
 We believe the last solution (providing good known ACPI tables) is the simplest and most effective to imple-
 ment, and thus is recommended as a solution to the ACPI attacks problem.
 
-(^13^) Implementing and Detecting an ACPI BIOS rootkit, [http://www.blackhat.com/presentations/bh-europe-06/bh-eu-06-Heasman.pdf](http://www.blackhat.com/presentations/bh-europe-06/bh-eu-06-Heasman.pdf)
-(^14^) ACPI Design Principles and Concerns, [http://www.ssi.gouv.fr/IMG/pdf/article_acpi.pdf](http://www.ssi.gouv.fr/IMG/pdf/article_acpi.pdf)
+(^13^) Implementing and Detecting an ACPI BIOS rootkit, [http://www.blackhat.com/presentations/bh-europe-06/bh-eu-06-Heasman.pdf](http://www.blackhat.com/presentations/bh-europe-06/bh-eu-06-Heasman.pdf)  
+(^14^) ACPI Design Principles and Concerns, [http://www.ssi.gouv.fr/IMG/pdf/article_acpi.pdf](http://www.ssi.gouv.fr/IMG/pdf/article_acpi.pdf)  
 (^15^) One should note that, strictly speaking, this is not an attack against TXT -- rather it's an attack on one of the entities loaded via TXT
-(Dom0 in that case) that chooses to trust unverified input (ACPI tabled provided by BIOS), that turns out to be malicious.
-(^16^) This is already being done by tboot for ACPI DMAR tables.
+(Dom0 in that case) that chooses to trust unverified input (ACPI tabled provided by BIOS), that turns out to be malicious.  
+(^16^) This is already being done by tboot for ACPI DMAR tables.  
 (^17^) In private conversation.
 
 
@@ -1241,7 +1241,7 @@ protocol mentioned earlier.
 
 <PLACEHOLDER_IMAGE_5>[![_Figure 5. Efficient implementation of AppViewer using composition buffers (requires XComposite extension to be enabled in the AppVM's X server)._](/images/4.png)](/images/5.png)
 
-(^21^) [http://www.x.org/releases/X11R7.5/doc/compositeproto/compositeproto.txt](http://www.x.org/releases/X11R7.5/doc/compositeproto/compositeproto.txt)
+(^21^) [http://www.x.org/releases/X11R7.5/doc/compositeproto/compositeproto.txt](http://www.x.org/releases/X11R7.5/doc/compositeproto/compositeproto.txt)  
 (^22^) Starting from Windows Vista.
 
 
@@ -1565,7 +1565,7 @@ attacker's code will not run, because the attacker can simply choose to never ex
 sors allow to lock down the configuration, so that the CPU would refuse to execute any VMX instructions without prior executing
 SENTER instruction (entering SMX mode). However, there is nothing that would require the attacker to use VMX instructions in his or
 her modified hypervisor. Consequently, we don't make use of the TXT Launch Policy, as we don't believe it offers any security improve-
-ment over the "bare" TXT.
+ment over the "bare" TXT.  
 (^24^) The keys.gpg file would likely have to be part of the initramfs file, to make it possible for the init script to read it. This is a minor techni-
 cality though.
 
@@ -1723,7 +1723,7 @@ Intel TXT requires that we either trust the platform SMM handler (as it can surv
 ess), or alternatively, that we provide a special hypervisor needed to contain the potentially buggy SMM, the
 so called SMM Transfer Monitor (STM). So, it's either the SMM handler, or the STM hypervisor, that should
 
-(^27^) The OATH specification can be found at ftp://ftp.rfc-editor.org/in-notes/rfc4226.txt
+(^27^) The OATH specification can be found at ftp://ftp.rfc-editor.org/in-notes/rfc4226.txt  
 (^28^) It's usually assumed that the token OTP counter might get out of sync with the system counter (e.g. because the button on the token
 used for generating new OTP password might be incidentally pressed by the user). Thus a certain window is assumed, that allows the
 user to enter any token whose index belong to the following set: N+1, ..., N+n, where _N_ is the last used token index, and _n_ is the maxi-
@@ -1872,8 +1872,8 @@ be read by this VM, which might contain e.g. the keys used to encrypt the block 
 exchange, in which case the attacker, that also controls the storage domain, could steal the contents of the
 files being exchanged between the VMs.
 
-(^31^) This is a good example to support the thesis that the less code in the hypervisor the better.
-(^32^) [http://invisiblethingslab.com/resources/bh08/part2-full.pdf](http://invisiblethingslab.com/resources/bh08/part2-full.pdf)
+(^31^) This is a good example to support the thesis that the less code in the hypervisor the better.  
+(^32^) [http://invisiblethingslab.com/resources/bh08/part2-full.pdf](http://invisiblethingslab.com/resources/bh08/part2-full.pdf)  
 (^33^) Obviously we don't assume that OS-level isolation is really that effective, hence the use of the word "minor". It's expected that a
 skilled attacker can find and exploit a kernel overflow to escalate from user to root in Dom0.
 
